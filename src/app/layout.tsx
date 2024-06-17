@@ -28,8 +28,14 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${pretendard.variable}`}>
       <body className={pretendard.className}>
-        <Header />
-        {children}
+        {/* FUll CONTAINER */}
+        <div className="flex h-screen w-full items-center justify-center">
+          {/* Mobile Container */}
+          <div className="flex h-screen min-w-[600px] flex-col bg-gray-100">
+            <Header />
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   );
