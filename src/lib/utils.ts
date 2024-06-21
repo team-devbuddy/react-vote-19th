@@ -9,6 +9,22 @@ export const handleClickOutside = (
   }
 };
 
+const validateUserId = (userId: string): string | undefined => {
+  if (!userId) {
+    return '아이디를 입력해주세요.';
+  } else if (!/^[a-z0-9]{6,12}$/.test(userId)) {
+    return '영어 소문자와 숫자를 조합하여 6자 이상 12자 이내여야 해요.';
+  }
+};
+
+const validatePassword = (password: string): string | undefined => {
+  if (!password) {
+    return '비밀번호를 입력해주세요.';
+  } else if (!/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+])[A-Za-z0-9!@#$%^&*()_+]{8,}$/.test(password)) {
+    return '영어, 숫자, 특수문자를 조합하여 8자 이상이어야 해요.';
+  }
+};
+
 export const SignUpValidation = (values: FormData): Partial<FormData> => {
   const errors: Partial<FormData> = {};
 
@@ -24,16 +40,14 @@ export const SignUpValidation = (values: FormData): Partial<FormData> => {
     errors.email = '유효하지 않은 이메일이에요.';
   }
 
-  if (!values.username) {
-    errors.username = '아이디를 입력해주세요.';
-  } else if (!/^[a-z0-9]{6,12}$/.test(values.username)) {
-    errors.username = '영어 소문자와 숫자를 조합하여 6자 이상 12자 이내여야 해요.';
+  const userIdError = validateUserId(values.userId);
+  if (userIdError) {
+    errors.userId = userIdError;
   }
 
-  if (!values.password) {
-    errors.password = '비밀번호를 입력해주세요.';
-  } else if (!/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+])[A-Za-z0-9!@#$%^&*()_+]{8,}$/.test(values.password)) {
-    errors.password = '영어, 숫자, 특수문자를 조합하여 8자 이상이어야 해요.';
+  const passwordError = validatePassword(values.password);
+  if (passwordError) {
+    errors.password = passwordError;
   }
 
   if (values.password && !values.confirmPassword) {
@@ -43,7 +57,7 @@ export const SignUpValidation = (values: FormData): Partial<FormData> => {
   }
 
   if (!values.team) {
-    errors.team = '팀을 선택해주세요.'; //출력안해도.......
+    errors.team = '팀을 선택해주세요.';
   }
 
   if (!values.department) {
@@ -52,4 +66,19 @@ export const SignUpValidation = (values: FormData): Partial<FormData> => {
 
   return errors;
 };
- 
+
+export const LoginValidation = (values: Partial<FormData>): Partial<FormData> => {
+  const errors: Partial<FormData> = {};
+
+  const userIdError = validateUserId(values.userId || '');
+  if (userIdError) {
+    errors.userId = userIdError;
+  }
+
+  const passwordError = validatePassword(values.password || '');
+  if (passwordError) {
+    errors.password = passwordError;
+  }
+
+  return errors;
+};

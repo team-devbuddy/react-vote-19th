@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { FormData } from '@/lib/utils/types';
 
 interface UseFormProps {
   initialValues: FormData;
@@ -8,7 +7,7 @@ interface UseFormProps {
 }
 
 export default function useForm({ initialValues, onSubmit, validate }: UseFormProps) {
-  const [values, setValues] = useState(initialValues);
+  const [values, setValues] = useState<FormData>(initialValues);
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +32,12 @@ export default function useForm({ initialValues, onSubmit, validate }: UseFormPr
     setTouched((prevTouched) => ({ ...prevTouched, [id]: true }));
   };
 
+  const resetForm = (newValues: FormData) => {
+    setValues(newValues);
+    setErrors({});
+    setTouched({});
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
@@ -54,6 +59,7 @@ export default function useForm({ initialValues, onSubmit, validate }: UseFormPr
     handleBlur,
     handleSubmit,
     setFieldValue,
+    resetForm,
     setErrors,
   };
 }

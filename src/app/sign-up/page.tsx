@@ -20,7 +20,7 @@ function SignUpPage() {
   } = useForm({
     initialValues: {
       name: '',
-      username: '',
+      userId: '',
       password: '',
       confirmPassword: '',
       email: '',
@@ -35,7 +35,8 @@ function SignUpPage() {
 
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  const isFormValid = Object.keys(errors).length === 0;
+  const isFormValid = Object.values(values).every(value => value !== '') &&
+                      Object.keys(errors).length === 0;
 
   return (
     <div className="relative flex justify-center items-center h-screen overflow-y-auto w-screen text-white bg-black">
@@ -48,12 +49,12 @@ function SignUpPage() {
           {inputFields.map((field) => (
             <InputField
               key={field.id}
-              id={field.id}
+              id={field.id === 'userId' ? 'userId' : field.id}
               type={field.type}
               placeholder={field.placeholder}
-              value={values[field.id as keyof FormData]}
-              touched={!!touched[field.id as keyof FormData]}
-              error={errors[field.id as keyof FormData] || ''}
+              value={values[field.id === 'userId' ? 'userId' : field.id as keyof FormData]}
+              touched={!!touched[field.id === 'userId' ? 'userId' : field.id as keyof FormData]}
+              error={errors[field.id === 'userId' ? 'userId' : field.id as keyof FormData] || ''}
               handleChange={handleChange}
               handleBlur={handleBlur}
               handleClear={setFieldValue}
@@ -74,7 +75,7 @@ function SignUpPage() {
             />
           )}
 
-        <div className="mb-5 w-5/6 mx-auto flex justify-between items-center relative space-x-4">
+          <div className="mb-5 w-5/6 mx-auto flex justify-between items-center relative space-x-4 ">
             <InputField
               id="email"
               type="email"
@@ -87,7 +88,7 @@ function SignUpPage() {
               handleClear={setFieldValue}
             />
             <button
-              className="mb-4  bg-gray-600 hover:bg-gray-700 text-white py-1 px-1.5 rounded focus:outline-none focus:shadow-outline"
+              className="mb-4  min-w-12 bg-gray-600 hover:bg-gray-700 text-white py-1 px-1.5 rounded focus:outline-none focus:shadow-outline"
               type="button"
             >
               인증
