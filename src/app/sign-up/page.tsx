@@ -11,8 +11,7 @@ import CheckBox from '/public/image/CheckBox.svg';
 const inputFields = [
   { id: 'name', type: 'text', placeholder: '이름', maxLength: 10 },
   { id: 'username', type: 'text', placeholder: '아이디', maxLength: 12 },
-  { id: 'password', type: 'password', placeholder: '비밀번호' },
-  { id: 'confirmPassword', type: 'password', placeholder: '비밀번호 확인' }
+  { id: 'password', type: 'password', placeholder: '비밀번호' }
 ];
 
 const teamOptions = ['비트버디', '아지토', '커플로그', '티그', '펫플레이트'];
@@ -27,6 +26,7 @@ function SignUpPage() {
     handleChange,
     handleBlur,
     handleSubmit,
+    setFieldValue,
   } = useForm({
     initialValues: {
       name: '',
@@ -73,27 +73,47 @@ function SignUpPage() {
               {touched[field.id as keyof FormData] && !errors[field.id as keyof FormData] && <Image src={CheckBox} alt="check" className="absolute right-2 top-2" width={20} height={20} />}
             </div>
           ))}
+           {touched.password && !errors.password && (
+            <div className="relative mb-5 w-5/6 mx-auto">
+              <input
+                className={`w-full bg-transparent border-b-2 py-2 px-3 text-white placeholder-gray-500 focus:outline-none ${touched.confirmPassword && errors.confirmPassword ? 'border-gray-600' : touched.confirmPassword && !errors.confirmPassword ? 'border-main' : 'border-gray-600'}`}
+                id="confirmPassword"
+                type="password"
+                placeholder="비밀번호 확인"
+                value={values.confirmPassword}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {touched.confirmPassword && errors.confirmPassword && <p className="text-main text-xs mt-1">{errors.confirmPassword}</p>}
+              {touched.confirmPassword && !errors.confirmPassword && <Image src={CheckBox} alt="check" className="absolute right-2 top-2" width={20} height={20} />}
+            </div>
+          )}
 
-          <div className="relative mb-5 w-5/6 mx-auto flex items-center">
-            <input
-              className={`flex-grow bg-transparent border-b-2 py-1 px-3 text-white placeholder-gray-500 focus:outline-none ${touched.email && errors.email ? 'border-gray-600' : touched.email && !errors.email ? 'border-main' : 'border-gray-600'}`}
-              id="email"
-              type="email"
-              placeholder="이메일 주소"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            <button
-              className="ml-2 bg-gray-600 hover:bg-gray-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-              type="button"
-              // onClick={handleEmailVerification}
-            >
-              인증
-            </button>
+          <div className="relative mb-5 w-5/6 mx-auto">
+            <div className="flex items-center">
+              <input
+                className={`flex-grow bg-transparent border-b-2 py-1 px-3 text-white placeholder-gray-500 focus:outline-none ${touched.email && errors.email ? 'border-gray-600' : touched.email && !errors.email ? 'border-main' : 'border-gray-600'}`}
+                id="email"
+                type="email"
+                placeholder="이메일 주소"
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              <button
+                className="ml-2 bg-gray-600 hover:bg-gray-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                type="button"
+                // onClick={handleEmailVerification}
+              >
+                인증
+              </button>
+            </div>
             {touched.email && errors.email && <p className="text-main text-xs mt-1">{errors.email}</p>}
             {touched.email && !errors.email && <Image src={CheckBox} alt="check" className="absolute right-14 top-2" width={20} height={20} />}
           </div>
+
+         
+
           <div className="mb-5 w-5/6 mx-auto flex justify-between relative space-x-4">
             <Dropdown
               label="팀 선택"
