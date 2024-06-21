@@ -1,13 +1,10 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-
-interface DropdownProps {
-  label: string;
-  options: string[];
-  selectedOption: string;
-  setSelectedOption: (value: string) => void;
-}
+import { motion, AnimatePresence } from 'framer-motion';
+import { DropdownProps } from '@/lib/types';
+import { dropdownVariants } from '@/lib/animation';
+import { handleClickOutside } from '@/lib/utils';
 
 function Dropdown({ label, options, selectedOption, setSelectedOption }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,16 +17,11 @@ function Dropdown({ label, options, selectedOption, setSelectedOption }: Dropdow
     setIsOpen(false);
   };
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-      setIsOpen(false);
-    }
-  };
-
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    const handleOutsideClick = handleClickOutside(dropdownRef, setIsOpen);
+    document.addEventListener('mousedown', handleOutsideClick);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleOutsideClick);
     };
   }, []);
 
@@ -42,19 +34,27 @@ function Dropdown({ label, options, selectedOption, setSelectedOption }: Dropdow
         <span>{selectedOption || label}</span>
         {isOpen ? <FaChevronUp /> : <FaChevronDown />}
       </div>
-      {isOpen && (
-        <ul className="absolute bg-black text-white w-full border border-gray-600 mt-1 z-10 max-h-40 overflow-y-auto">
-          {options.map(option => (
-            <li
-              key={option}
-              className={`py-2 px-3 cursor-pointer hover:text-white hover:bg-main ${selectedOption === option ? 'text-main' : ''}`}
-              onClick={() => handleOptionSelect(option)}
-            >
-              {option}
-            </li>
-          ))}
-        </ul>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={dropdownVariants}
+            className="absolute w-full mt-1 z-10 flex flex-wrap "
+          >
+            {options.map(option => (
+              <div
+                key={option}
+                className={`bg-white m-1 py-1 px-2 cursor-pointer rounded-full border text-sm font-semibold ${selectedOption === option ? 'text-main border-main' : 'text-BG-black border-none'} hover:text-white hover:bg-main transform transition-transform duration-150 hover:scale-105`}
+                onClick={() => handleOptionSelect(option)}
+              >
+                {option}
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
