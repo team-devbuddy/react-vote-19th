@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dropdown from '@/components/layout/Dropdown';
 import useForm from '@/hooks/useForm';
 import { SignUpValidation } from '@/lib/utils';
 import { FormData } from '@/lib/utils/types';
 import Image from 'next/image';
 import CheckBox from '/public/image/CheckBox.svg';
+import Xmark from '/public/image/Xmark.svg';
 
 const inputFields = [
   { id: 'name', type: 'text', placeholder: '이름', maxLength: 10 },
@@ -27,6 +28,7 @@ function SignUpPage() {
     handleBlur,
     handleSubmit,
     setFieldValue,
+    setErrors,
   } = useForm({
     initialValues: {
       name: '',
@@ -37,8 +39,8 @@ function SignUpPage() {
       team: '',
       department: ''
     },
-    onSubmit: (values: FormData) => {
-      console.log('Form submitted successfully:', values);
+    onSubmit: (values) => {
+      console.log('Form submitted:', values);
     },
     validate: SignUpValidation
   });
@@ -49,6 +51,14 @@ function SignUpPage() {
                       values.team !== '' &&
                       values.department !== '';
 
+  const handleClearInput = (id: keyof FormData) => {
+    setFieldValue(id, '');
+  };
+
+  useEffect(() => {
+    setErrors(SignUpValidation(values));
+  }, [values]);
+
   return (
     <div className="relative flex justify-center items-center h-screen overflow-y-auto w-screen text-white bg-black">
       {activeDropdown && <div className="fixed inset-0 bg-black opacity-50 z-10" onClick={() => setActiveDropdown(null)}></div>}
@@ -58,7 +68,7 @@ function SignUpPage() {
         </div>
         <form className="bg-transparent" onSubmit={handleSubmit}>
           {inputFields.map(field => (
-            <div key={field.id} className="relative mb-5 w-5/6 mx-auto">
+            <div key={field.id} className="relative mb-2 w-5/6 mx-auto">
               <input
                 className={`w-full bg-transparent border-b-2 py-2 px-3 text-white placeholder-gray-500 focus:outline-none ${touched[field.id as keyof FormData] && errors[field.id as keyof FormData] ? 'border-gray-600' : touched[field.id as keyof FormData] && !errors[field.id as keyof FormData] ? 'border-main' : 'border-gray-600'}`}
                 id={field.id}
@@ -69,11 +79,29 @@ function SignUpPage() {
                 onBlur={handleBlur}
                 maxLength={field.maxLength || undefined}
               />
-              {touched[field.id as keyof FormData] && errors[field.id as keyof FormData] && <p className="text-main text-xs mt-1">{errors[field.id as keyof FormData]}</p>}
-              {touched[field.id as keyof FormData] && !errors[field.id as keyof FormData] && <Image src={CheckBox} alt="check" className="absolute right-2 top-2" width={20} height={20} />}
+              {touched[field.id as keyof FormData] && errors[field.id as keyof FormData] ? (
+                <>
+                  <p className="text-main text-xs mt-1 h-4">{errors[field.id as keyof FormData]}</p>
+                  <Image
+                    src={Xmark}
+                    alt="clear"
+                    className="absolute right-2 top-2 cursor-pointer"
+                    width={20}
+                    height={20}
+                    onClick={() => handleClearInput(field.id)}
+                    onMouseDown={(e) => e.preventDefault()}
+                  />
+                </>
+              ) : (
+                <p className="h-5"></p>
+              )}
+              {touched[field.id as keyof FormData] && !errors[field.id as keyof FormData] && (
+                <Image src={CheckBox} alt="check" className="absolute right-2 top-2" width={20} height={20} />
+              )}
             </div>
           ))}
-           {touched.password && !errors.password && (
+
+          {touched.password && !errors.password && (
             <div className="relative mb-5 w-5/6 mx-auto">
               <input
                 className={`w-full bg-transparent border-b-2 py-2 px-3 text-white placeholder-gray-500 focus:outline-none ${touched.confirmPassword && errors.confirmPassword ? 'border-gray-600' : touched.confirmPassword && !errors.confirmPassword ? 'border-main' : 'border-gray-600'}`}
@@ -84,8 +112,25 @@ function SignUpPage() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {touched.confirmPassword && errors.confirmPassword && <p className="text-main text-xs mt-1">{errors.confirmPassword}</p>}
-              {touched.confirmPassword && !errors.confirmPassword && <Image src={CheckBox} alt="check" className="absolute right-2 top-2" width={20} height={20} />}
+              {touched.confirmPassword && errors.confirmPassword ? (
+                <>
+                  <p className="text-main text-xs mt-1 h-4">{errors.confirmPassword}</p>
+                  <Image
+                    src={Xmark}
+                    alt="clear"
+                    className="absolute right-2 top-2 cursor-pointer"
+                    width={20}
+                    height={20}
+                    onClick={() => handleClearInput('confirmPassword')}
+                    onMouseDown={(e) => e.preventDefault()}
+                  />
+                </>
+              ) : (
+                <p className="h-5"></p>
+              )}
+              {touched.confirmPassword && !errors.confirmPassword && (
+                <Image src={CheckBox} alt="check" className="absolute right-2 top-2" width={20} height={20} />
+              )}
             </div>
           )}
 
@@ -108,11 +153,15 @@ function SignUpPage() {
                 인증
               </button>
             </div>
-            {touched.email && errors.email && <p className="text-main text-xs mt-1">{errors.email}</p>}
-            {touched.email && !errors.email && <Image src={CheckBox} alt="check" className="absolute right-14 top-2" width={20} height={20} />}
+            {touched.email && errors.email ? (
+              <p className="text-main text-xs mt-1 h-4">{errors.email}</p>
+            ) : (
+              <p className="h-5"></p>
+            )}
+            {touched.email && !errors.email && (
+              <Image src={CheckBox} alt="check" className="absolute right-14 top-2" width={20} height={20} />
+            )}
           </div>
-
-         
 
           <div className="mb-5 w-5/6 mx-auto flex justify-between relative space-x-4">
             <Dropdown

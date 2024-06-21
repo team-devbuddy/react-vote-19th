@@ -14,6 +14,10 @@ export default function useForm({ initialValues, onSubmit, validate }: UseFormPr
   const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    setErrors(validate(values));
+  }, [values, validate]);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setValues({ ...values, [id]: value });
@@ -23,6 +27,11 @@ export default function useForm({ initialValues, onSubmit, validate }: UseFormPr
     const { id } = event.target;
     setTouched({ ...touched, [id]: true });
     setErrors(validate(values));
+  };
+
+  const setFieldValue = (id: string, value: string) => {
+    setValues((prevValues) => ({ ...prevValues, [id]: value }));
+    setTouched((prevTouched) => ({ ...prevTouched, [id]: true }));
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -45,5 +54,7 @@ export default function useForm({ initialValues, onSubmit, validate }: UseFormPr
     handleChange,
     handleBlur,
     handleSubmit,
+    setFieldValue,
+    setErrors,
   };
 }
