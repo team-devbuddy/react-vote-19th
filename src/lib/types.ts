@@ -3,6 +3,9 @@ export interface DropdownProps {
     options: string[];
     selectedOption: string;
     setSelectedOption: (value: string) => void;
+    isOpen: boolean;
+    onOpen: () => void;
+    onClose: () => void;
   }
   
   export interface FormData {
@@ -14,3 +17,12 @@ export interface DropdownProps {
     team: string;
     department: string;
   }
+  
+  export interface ValidationProps {
+    name?: string;
+    email?: string;
+    username?: string;
+    password?: string;
+    confirmPassword?: string;
+  }
+  
