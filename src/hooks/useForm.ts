@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
-import { ValidationProps } from '@/lib/utils/types';
-import { SignUpValidation } from '@/lib/utils/SignUpValidation';
+import { FormData } from '@/lib/utils/types';
 
 interface UseFormProps {
-  initialValues: ValidationProps;
-  onSubmit: (values: ValidationProps) => void;
-  validate: (values: ValidationProps) => ValidationProps;
+  initialValues: FormData;
+  onSubmit: (values: FormData) => void;
+  validate: (values: FormData) => Partial<FormData>;
 }
 
 export default function useForm({ initialValues, onSubmit, validate }: UseFormProps) {
   const [values, setValues] = useState(initialValues);
-  const [errors, setErrors] = useState<ValidationProps>({});
+  const [errors, setErrors] = useState<Partial<FormData>>({});
   const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
   const [isLoading, setIsLoading] = useState(false);
 

@@ -18,11 +18,3 @@ export interface DropdownProps {
     department: string;
   }
   
-  export interface ValidationProps {
-    name?: string;
-    email?: string;
-    username?: string;
-    password?: string;
-    confirmPassword?: string;
-  }
-  
