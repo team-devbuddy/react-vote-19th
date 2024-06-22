@@ -28,7 +28,7 @@ function SignUpPage() {
       team: '',
       department: ''
     },
-    onSubmit: async (values: FormData) => {
+    onSubmit: async (values) => {
       const result = await signUpRequest(values);
       if (result) {
         console.log('회원가입 성공');
@@ -45,7 +45,7 @@ function SignUpPage() {
                       Object.keys(errors).length === 0;
 
   return (
-    <div className="relative flex justify-center items-center h-screen overflow-y-auto w-screen text-white bg-black">
+    <div className="relative flex justify-center items-center h-screen overflow-y-auto w-screen text-white bg-transparent">
       {activeDropdown && <div className="fixed inset-0 bg-black opacity-50 z-10" onClick={() => setActiveDropdown(null)}></div>}
       <div className="w-full max-w-md px-4 py-8 z-20">
         <div className="w-5/6 mx-auto">
@@ -106,7 +106,7 @@ function SignUpPage() {
               label="팀 선택"
               options={teamOptions.map(option => option.name)}
               selectedOption={values.team || ''}
-              setSelectedOption={(value) => handleChange({ target: { id: 'team', value } } as React.ChangeEvent<HTMLInputElement>)}
+              setSelectedOption={(value) => setFieldValue('team', value)}
               isOpen={activeDropdown === 'team'}
               onOpen={() => setActiveDropdown('team')}
               onClose={() => setActiveDropdown(null)}
@@ -115,7 +115,7 @@ function SignUpPage() {
               label="파트 선택"
               options={departmentOptions}
               selectedOption={values.department || ''}
-              setSelectedOption={(value) => handleChange({ target: { id: 'department', value } } as React.ChangeEvent<HTMLInputElement>)}
+              setSelectedOption={(value) => setFieldValue('department', value)}
               isOpen={activeDropdown === 'department'}
               onOpen={() => setActiveDropdown('department')}
               onClose={() => setActiveDropdown(null)}

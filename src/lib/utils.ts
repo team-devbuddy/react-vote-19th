@@ -10,6 +10,7 @@ export const handleClickOutside = (
   }
 };
 
+
 const validateUserId = (userId: string): string | undefined => {
   if (!userId) {
     return '아이디를 입력해주세요.';
@@ -18,6 +19,7 @@ const validateUserId = (userId: string): string | undefined => {
   }
 };
 
+
 const validatePassword = (password: string): string | undefined => {
   if (!password) {
     return '비밀번호를 입력해주세요.';
@@ -25,6 +27,8 @@ const validatePassword = (password: string): string | undefined => {
     return '영어, 숫자, 특수문자를 조합하여 8자 이상이어야 해요.';
   }
 };
+
+
 
 export const SignUpValidation = (values: FormData): Partial<FormData> => {
   const errors: Partial<FormData> = {};
