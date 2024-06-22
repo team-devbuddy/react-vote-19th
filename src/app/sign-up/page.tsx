@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import { useForm } from '@/hooks/useForm';
+import { useForm } from '@/hooks/useForm';
 import InputField from '@/components/layout/InputField';
+import Dropdown from '@/components/layout/Dropdown';
 import Dropdown from '@/components/layout/Dropdown';
 import { SignUpValidation } from '@/lib/utils';
 import { FormData } from '@/lib/types';
@@ -21,7 +23,7 @@ function SignUpPage() {
       team: '',
       department: '',
     },
-    onSubmit: async (values) => {
+    onSubmit: async (values: FormData) => {
       const result = await signUpRequest(values);
       if (result) {
         console.log('회원가입 성공');
@@ -51,13 +53,18 @@ function SignUpPage() {
             <InputField
               key={field.id}
               id={field.id}
+              id={field.id}
               type={field.type}
               placeholder={field.placeholder}
               value={values[field.id as keyof FormData] || ''}
               touched={!!touched[field.id as keyof FormData]}
               error={errors[field.id as keyof FormData] || ''}
+              value={values[field.id as keyof FormData] || ''}
+              touched={!!touched[field.id as keyof FormData]}
+              error={errors[field.id as keyof FormData] || ''}
               handleChange={handleChange}
               handleBlur={handleBlur}
+              handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
               handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
             />
           ))}
@@ -73,6 +80,7 @@ function SignUpPage() {
               handleChange={handleChange}
               handleBlur={handleBlur}
               handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
+              handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
             />
           )}
 
@@ -82,10 +90,12 @@ function SignUpPage() {
               type="email"
               placeholder="이메일 주소"
               value={values.email || ''}
+              value={values.email || ''}
               touched={!!touched.email}
               error={errors.email || ''}
               handleChange={handleChange}
               handleBlur={handleBlur}
+              handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
               handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
             />
             <button
@@ -100,7 +110,9 @@ function SignUpPage() {
               label="팀 선택"
               options={teamOptions.map((option) => option.name)}
               selectedOption={values.team || ''}
-              setSelectedOption={(value) => setFieldValue('team', value)}
+              setSelectedOption={(value) =>
+                handleChange({ target: { id: 'team', value } } as React.ChangeEvent<HTMLInputElement>)
+              }
               isOpen={activeDropdown === 'team'}
               onOpen={() => setActiveDropdown('team')}
               onClose={() => setActiveDropdown(null)}
@@ -109,7 +121,9 @@ function SignUpPage() {
               label="파트 선택"
               options={departmentOptions}
               selectedOption={values.department || ''}
-              setSelectedOption={(value) => setFieldValue('department', value)}
+              setSelectedOption={(value) =>
+                handleChange({ target: { id: 'department', value } } as React.ChangeEvent<HTMLInputElement>)
+              }
               isOpen={activeDropdown === 'department'}
               onOpen={() => setActiveDropdown('department')}
               onClose={() => setActiveDropdown(null)}
