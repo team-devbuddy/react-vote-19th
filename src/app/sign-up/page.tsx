@@ -32,7 +32,7 @@ function SignUpPage() {
       team: '',
       department: ''
     },
-    onSubmit: async (values: FormData) => {
+    onSubmit: async (values) => {
       const result = await signUpRequest(values);
       if (result) {
         console.log('회원가입 성공');
@@ -119,7 +119,7 @@ function SignUpPage() {
               label="팀 선택"
               options={teamOptions.map(option => option.name)}
               selectedOption={values.team || ''}
-              setSelectedOption={(value) => handleChange({ target: { id: 'team', value } } as React.ChangeEvent<HTMLInputElement>)}
+              setSelectedOption={(value) => setFieldValue('team', value)}
               isOpen={activeDropdown === 'team'}
               onOpen={() => setActiveDropdown('team')}
               onClose={() => setActiveDropdown(null)}
@@ -128,7 +128,7 @@ function SignUpPage() {
               label="파트 선택"
               options={departmentOptions}
               selectedOption={values.department || ''}
-              setSelectedOption={(value) => handleChange({ target: { id: 'department', value } } as React.ChangeEvent<HTMLInputElement>)}
+              setSelectedOption={(value) => setFieldValue('department', value)}
               isOpen={activeDropdown === 'department'}
               onOpen={() => setActiveDropdown('department')}
               onClose={() => setActiveDropdown(null)}
