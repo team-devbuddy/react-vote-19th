@@ -3,8 +3,8 @@ import { LoginFormData } from '../types';
 export const loginRequest = async (values: LoginFormData) => {
   const url = 'http://43.201.123.205:8080/login';
 
-  console.log("Sending login request to URL:", url);
-  console.log("Request body:", {
+  console.log('Sending login request to URL:', url);
+  console.log('Request body:', {
     loginId: values.userId,
     password: values.password,
   });
@@ -13,7 +13,7 @@ export const loginRequest = async (values: LoginFormData) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      Accept: 'application/json',
     },
     body: JSON.stringify({
       loginId: values.userId,
@@ -21,7 +21,7 @@ export const loginRequest = async (values: LoginFormData) => {
     }),
   });
 
-  console.log("Response status:", response.status);
+  console.log('Response status:', response.status);
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -29,7 +29,7 @@ export const loginRequest = async (values: LoginFormData) => {
     throw new Error(`API call failed with status: ${response.status}, message: ${errorText}`);
   }
   const result = await response.json();
-  console.log("Response result:", result);
+  console.log('Response result:', result);
 
   localStorage.setItem('token', result.token);
   localStorage.setItem('username', result.username);

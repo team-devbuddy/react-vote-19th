@@ -3,7 +3,9 @@
 import React from 'react';
 import InputField from '@/components/layout/InputField';
 import { useForm } from '@/hooks/useForm';
+import { useForm } from '@/hooks/useForm';
 import { LoginValidation } from '@/lib/utils';
+import { LoginFormData } from '@/lib/types';
 import { LoginFormData } from '@/lib/types';
 import { loginInputFields } from '@/lib/data';
 import { loginRequest } from '@/lib/actions/loginAction';
@@ -19,6 +21,7 @@ function LoginPage() {
     handleBlur,
     handleSubmit,
     setFieldValue,
+  } = useForm<LoginFormData>({
   } = useForm<LoginFormData>({
     initialValues: {
       userId: '',
@@ -56,8 +59,12 @@ function LoginPage() {
               value={values[field.id as keyof LoginFormData] || ''}
               touched={!!touched[field.id as keyof LoginFormData]}
               error={errors[field.id as keyof LoginFormData] || ''}
+              value={values[field.id as keyof LoginFormData] || ''}
+              touched={!!touched[field.id as keyof LoginFormData]}
+              error={errors[field.id as keyof LoginFormData] || ''}
               handleChange={handleChange}
               handleBlur={handleBlur}
+              handleClear={(id, value) => setFieldValue(id as keyof LoginFormData, value)}
               handleClear={(id, value) => setFieldValue(id as keyof LoginFormData, value)}
             />
           ))}

@@ -1,7 +1,7 @@
 export const inputFields = [
   { id: 'name', type: 'text', placeholder: '이름', maxLength: 10 },
   { id: 'userId', type: 'text', placeholder: '아이디', maxLength: 12 },
-  { id: 'password', type: 'password', placeholder: '비밀번호' }
+  { id: 'password', type: 'password', placeholder: '비밀번호' },
 ];
 
 export interface TeamOption {
@@ -17,9 +17,9 @@ export const teamOptions: TeamOption[] = [
   { id: 5, name: '펫플레이트' },
 ];
 
-export const departmentOptions = [ 'BACKEND','FRONTEND'];
+export const departmentOptions = ['BACKEND', 'FRONTEND'];
 
 export const loginInputFields = [
   { id: 'userId', type: 'text', placeholder: '아이디' },
-  { id: 'password', type: 'password', placeholder: '비밀번호' }
+  { id: 'password', type: 'password', placeholder: '비밀번호' },
 ];
