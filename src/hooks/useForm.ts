@@ -1,65 +1,62 @@
-import { useState, useEffect } from 'react';
+// src/hooks/useForm.ts
+import { useState } from 'react';
 
-interface UseFormProps {
-  initialValues: FormData;
-  onSubmit: (values: FormData) => void;
-  validate: (values: FormData) => Partial<FormData>;
+interface UseFormProps<T> {
+  initialValues: T;
+  onSubmit: (values: T) => void;
+  validate?: (values: T) => Partial<Record<keyof T, string>>;
 }
 
-export default function useForm({ initialValues, onSubmit, validate }: UseFormProps) {
-  const [values, setValues] = useState<FormData>(initialValues);
-  const [errors, setErrors] = useState<Partial<FormData>>({});
-  const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
-  const [isLoading, setIsLoading] = useState(false);
+export const useForm = <T extends Record<string, any>>({
+  initialValues,
+  onSubmit,
+  validate,
+}: UseFormProps<T>) => {
+  const [values, setValues] = useState<T>(initialValues);
+  const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
+  const [touched, setTouched] = useState<Partial<Record<keyof T, boolean>>>({});
 
-  useEffect(() => {
-    setErrors(validate(values));
-  }, [values, validate]);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = event.target;
-    setValues({ ...values, [id]: value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setValues({
+      ...values,
+      [id]: value,
+    });
   };
 
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    const { id } = event.target;
-    setTouched({ ...touched, [id]: true });
-    setErrors(validate(values));
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { id } = e.target;
+    setTouched({
+      ...touched,
+      [id]: true,
+    });
   };
 
-  const setFieldValue = (id: string, value: string) => {
-    setValues((prevValues) => ({ ...prevValues, [id]: value }));
-    setTouched((prevTouched) => ({ ...prevTouched, [id]: true }));
+  const handleClear = (id: keyof T, value: string) => {
+    setValues({
+      ...values,
+      [id]: value,
+    });
   };
 
-  const resetForm = (newValues: FormData) => {
-    setValues(newValues);
-    setErrors({});
-    setTouched({});
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsLoading(true);
-    const validationErrors = validate(values);
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length === 0) {
-      await onSubmit(values);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (validate) {
+      const validationErrors = validate(values);
+      setErrors(validationErrors);
+      const hasErrors = Object.values(validationErrors).some((error) => error);
+      if (hasErrors) return;
     }
-    setIsLoading(false);
+    onSubmit(values);
   };
 
   return {
     values,
     errors,
     touched,
-    isLoading,
     handleChange,
     handleBlur,
     handleSubmit,
-    setFieldValue,
-    resetForm,
-    setErrors,
+    setFieldValue: handleClear,
   };
-}
+};

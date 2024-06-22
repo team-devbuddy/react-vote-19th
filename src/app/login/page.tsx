@@ -2,10 +2,11 @@
 
 import React from 'react';
 import InputField from '@/components/layout/InputField';
-import useForm from '@/hooks/useForm';
+import { useForm } from '@/hooks/useForm';
 import { LoginValidation } from '@/lib/utils';
-import { FormData } from '@/lib/types';
+import { LoginFormData } from '@/lib/types';
 import { loginInputFields } from '@/lib/data';
+import { loginRequest } from '@/lib/actions/loginAction';
 
 function LoginPage() {
   const {
@@ -16,13 +17,20 @@ function LoginPage() {
     handleBlur,
     handleSubmit,
     setFieldValue,
-  } = useForm({
+  } = useForm<LoginFormData>({
     initialValues: {
       userId: '',
       password: ''
     },
-    onSubmit: (values) => {
-      console.log('Form submitted:', values);
+    onSubmit: async (values) => {
+      try {
+        const result = await loginRequest(values);
+        console.log('로그인 성공, 토큰:', result);
+        localStorage.setItem('token', result.token);
+        //페이지도이동하기
+      } catch (error) {
+        console.error('로그인 중 오류 발생', error);
+      }
     },
     validate: LoginValidation,
   });
@@ -43,12 +51,12 @@ function LoginPage() {
               id={field.id}
               type={field.type}
               placeholder={field.placeholder}
-              value={values[field.id as keyof FormData]}
-              touched={!!touched[field.id as keyof FormData]}
-              error={errors[field.id as keyof FormData] || ''}
+              value={values[field.id as keyof LoginFormData] || ''}
+              touched={!!touched[field.id as keyof LoginFormData]}
+              error={errors[field.id as keyof LoginFormData] || ''}
               handleChange={handleChange}
               handleBlur={handleBlur}
-              handleClear={setFieldValue}
+              handleClear={(id, value) => setFieldValue(id as keyof LoginFormData, value)}
             />
           ))}
 

@@ -1,3 +1,4 @@
+import { MutableRefObject } from 'react';
 import { FormData } from './types';
 
 export const handleClickOutside = (
@@ -66,19 +67,15 @@ export const SignUpValidation = (values: FormData): Partial<FormData> => {
 
   return errors;
 };
-
-export const LoginValidation = (values: Partial<FormData>): Partial<FormData> => {
+export const LoginValidation = (values: Partial<FormData>) => {
   const errors: Partial<FormData> = {};
-
-  const userIdError = validateUserId(values.userId || '');
-  if (userIdError) {
-    errors.userId = userIdError;
+  
+  if (!values.userId) {
+    errors.userId = '아이디를 입력해주세요';
   }
-
-  const passwordError = validatePassword(values.password || '');
-  if (passwordError) {
-    errors.password = passwordError;
+  if (!values.password) {
+    errors.password = '비밀번호를 입력해주세요';
   }
-
+  
   return errors;
 };
