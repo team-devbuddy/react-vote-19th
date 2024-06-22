@@ -27,9 +27,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${pretendard.variable}`}>
-      <body className={`${pretendard.className} bg-black `}>
-          <div className="flex h-full w-full max-w-md flex-col bg-black">
-            {children}
+      <body className={`${pretendard.className} bg-black`}>
+        {/* Full Container */}
+        <div className="flex h-screen w-full items-center justify-center">
+          {/* Mobile Container */}
+          <div className="flex h-full w-full max-w-screen-md flex-col bg-BG-black">
+            <div className="flex flex-1 justify-center items-center">
+              {children}
+            </div>
+          </div>
         </div>
       </body>
     </html>

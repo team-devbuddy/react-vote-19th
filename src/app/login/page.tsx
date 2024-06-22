@@ -39,7 +39,7 @@ function LoginPage() {
                       Object.keys(errors).length === 0;
 
   return (
-    <div className="relative flex justify-center items-center h-screen overflow-y-auto w-screen text-white bg-black">
+    <div className="relative flex justify-center items-center h-screen overflow-y-auto w-screen text-white bg-BG-black">
       <div className="w-full max-w-md px-4 py-8 z-20">
         <div className="w-5/6 mx-auto">
           <h2 className="text-2xl font-bold mt-0 mb-8 text-left">로그인</h2>

@@ -28,7 +28,7 @@ function Dropdown({ label, options, selectedOption, setSelectedOption }: Dropdow
   return (
     <div ref={dropdownRef} className="relative w-1/2">
       <div
-        className={`bg-black text-white py-2 px-3 flex justify-between items-center cursor-pointer ${selectedOption ? 'border-main' : 'border-gray-600'} border-b-2`}
+        className={`bg-BG-black text-white py-2 px-3 flex justify-between items-center cursor-pointer ${selectedOption ? 'border-main' : 'border-gray-600'} border-b-2`}
         onClick={toggleDropdown}
       >
         <span>{selectedOption || label}</span>
