@@ -23,7 +23,7 @@ function SignUpPage() {
       team: '',
       department: '',
     },
-    onSubmit: async (values: FormData) => {
+    onSubmit: async (values) => {
       const result = await signUpRequest(values);
       if (result) {
         console.log('회원가입 성공');

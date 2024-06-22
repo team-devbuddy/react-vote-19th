@@ -17,20 +17,15 @@ export function useForm<T>({ initialValues, onSubmit, validate }: UseFormProps<T
     setErrors(validate(values));
   }, [values, validate]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setValues({
-      ...values,
-      [id]: value,
-    });
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = event.target;
+    setValues({ ...values, [id]: value });
   };
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const { id } = e.target;
-    setTouched({
-      ...touched,
-      [id]: true,
-    });
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { id } = event.target;
+    setTouched({ ...touched, [id]: true });
+    setErrors(validate(values));
   };
 
   const setFieldValue = (id: string, value: string) => {
@@ -44,24 +39,28 @@ export function useForm<T>({ initialValues, onSubmit, validate }: UseFormProps<T
     setTouched({});
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (validate) {
-      const validationErrors = validate(values);
-      setErrors(validationErrors);
-      const hasErrors = Object.values(validationErrors).some((error) => error);
-      if (hasErrors) return;
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
+    const validationErrors = validate(values);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      await onSubmit(values);
     }
-    onSubmit(values);
+    setIsLoading(false);
   };
 
   return {
     values,
     errors,
     touched,
+    isLoading,
     handleChange,
     handleBlur,
     handleSubmit,
-    setFieldValue: handleClear,
+    setFieldValue,
+    resetForm,
+    setErrors,
   };
 }
