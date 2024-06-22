@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import Dropdown from '@/components/layout/Dropdown';
+import { useForm } from '@/hooks/useForm';
 import InputField from '@/components/layout/InputField';
-import useForm from '@/hooks/useForm';
+import Dropdown from '@/components/layout/Dropdown';
 import { SignUpValidation } from '@/lib/utils';
 import { FormData } from '@/lib/types';
 import { inputFields, teamOptions, departmentOptions } from '@/lib/data';
+import { signUpRequest } from '@/lib/actions/signUpAction';
 
 function SignUpPage() {
   const {
@@ -17,7 +18,7 @@ function SignUpPage() {
     handleBlur,
     handleSubmit,
     setFieldValue,
-  } = useForm({
+  } = useForm<FormData>({
     initialValues: {
       name: '',
       userId: '',
@@ -27,8 +28,13 @@ function SignUpPage() {
       team: '',
       department: ''
     },
-    onSubmit: (values) => {
-      console.log('Form submitted:', values);
+    onSubmit: async (values) => {
+      const result = await signUpRequest(values);
+      if (result) {
+        console.log('회원가입 성공');
+      } else {
+        console.error('회원가입 실패');
+      }
     },
     validate: SignUpValidation,
   });
@@ -39,7 +45,7 @@ function SignUpPage() {
                       Object.keys(errors).length === 0;
 
   return (
-    <div className="relative flex justify-center items-center h-screen overflow-y-auto w-screen text-white bg-black">
+    <div className="relative flex justify-center items-center h-screen overflow-y-auto w-screen text-white bg-transparent">
       {activeDropdown && <div className="fixed inset-0 bg-black opacity-50 z-10" onClick={() => setActiveDropdown(null)}></div>}
       <div className="w-full max-w-md px-4 py-8 z-20">
         <div className="w-5/6 mx-auto">
@@ -49,15 +55,15 @@ function SignUpPage() {
           {inputFields.map((field) => (
             <InputField
               key={field.id}
-              id={field.id === 'userId' ? 'userId' : field.id}
+              id={field.id}
               type={field.type}
               placeholder={field.placeholder}
-              value={values[field.id === 'userId' ? 'userId' : field.id as keyof FormData]}
-              touched={!!touched[field.id === 'userId' ? 'userId' : field.id as keyof FormData]}
-              error={errors[field.id === 'userId' ? 'userId' : field.id as keyof FormData] || ''}
+              value={values[field.id as keyof FormData] || ''}
+              touched={!!touched[field.id as keyof FormData]}
+              error={errors[field.id as keyof FormData] || ''}
               handleChange={handleChange}
               handleBlur={handleBlur}
-              handleClear={setFieldValue}
+              handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
             />
           ))}
 
@@ -66,26 +72,26 @@ function SignUpPage() {
               id="confirmPassword"
               type="password"
               placeholder="비밀번호 확인"
-              value={values.confirmPassword}
+              value={values.confirmPassword || ''}
               touched={!!touched.confirmPassword}
               error={errors.confirmPassword || ''}
               handleChange={handleChange}
               handleBlur={handleBlur}
-              handleClear={setFieldValue}
+              handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
             />
           )}
 
-          <div className="mb-5 w-5/6 mx-auto flex justify-between items-center relative space-x-4 ">
+          <div className="mb-5 w-5/6 mx-auto flex justify-between items-center relative space-x-4">
             <InputField
               id="email"
               type="email"
               placeholder="이메일 주소"
-              value={values.email}
+              value={values.email || ''}
               touched={!!touched.email}
               error={errors.email || ''}
               handleChange={handleChange}
               handleBlur={handleBlur}
-              handleClear={setFieldValue}
+              handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
             />
             <button
               className="mb-4  min-w-12 bg-gray-600 hover:bg-gray-700 text-white py-1 px-1.5 rounded focus:outline-none focus:shadow-outline"
@@ -98,9 +104,9 @@ function SignUpPage() {
           <div className="mb-5 w-5/6 mx-auto flex justify-between relative space-x-4">
             <Dropdown
               label="팀 선택"
-              options={teamOptions}
-              selectedOption={values.team}
-              setSelectedOption={(value) => handleChange({ target: { id: 'team', value } } as React.ChangeEvent<HTMLInputElement>)}
+              options={teamOptions.map(option => option.name)}
+              selectedOption={values.team || ''}
+              setSelectedOption={(value) => setFieldValue('team', value)}
               isOpen={activeDropdown === 'team'}
               onOpen={() => setActiveDropdown('team')}
               onClose={() => setActiveDropdown(null)}
@@ -108,8 +114,8 @@ function SignUpPage() {
             <Dropdown
               label="파트 선택"
               options={departmentOptions}
-              selectedOption={values.department}
-              setSelectedOption={(value) => handleChange({ target: { id: 'department', value } } as React.ChangeEvent<HTMLInputElement>)}
+              selectedOption={values.department || ''}
+              setSelectedOption={(value) => setFieldValue('department', value)}
               isOpen={activeDropdown === 'department'}
               onOpen={() => setActiveDropdown('department')}
               onClose={() => setActiveDropdown(null)}

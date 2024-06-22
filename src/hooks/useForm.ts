@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
+import { FormData } from '@/lib/types';
 
-interface UseFormProps {
-  initialValues: FormData;
-  onSubmit: (values: FormData) => void;
-  validate: (values: FormData) => Partial<FormData>;
+interface UseFormProps<T> {
+  initialValues: T;
+  onSubmit: (values: T) => void;
+  validate: (values: T) => Partial<T>;
 }
 
-export default function useForm({ initialValues, onSubmit, validate }: UseFormProps) {
-  const [values, setValues] = useState<FormData>(initialValues);
-  const [errors, setErrors] = useState<Partial<FormData>>({});
+export function useForm<T>({ initialValues, onSubmit, validate }: UseFormProps<T>) {
+  const [values, setValues] = useState<T>(initialValues);
+  const [errors, setErrors] = useState<Partial<T>>({});
   const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +33,7 @@ export default function useForm({ initialValues, onSubmit, validate }: UseFormPr
     setTouched((prevTouched) => ({ ...prevTouched, [id]: true }));
   };
 
-  const resetForm = (newValues: FormData) => {
+  const resetForm = (newValues: T) => {
     setValues(newValues);
     setErrors({});
     setTouched({});

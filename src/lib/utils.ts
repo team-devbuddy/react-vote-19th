@@ -1,3 +1,4 @@
+import { MutableRefObject } from 'react';
 import { FormData } from './types';
 
 export const handleClickOutside = (
@@ -9,6 +10,7 @@ export const handleClickOutside = (
   }
 };
 
+
 const validateUserId = (userId: string): string | undefined => {
   if (!userId) {
     return '아이디를 입력해주세요.';
@@ -17,6 +19,7 @@ const validateUserId = (userId: string): string | undefined => {
   }
 };
 
+
 const validatePassword = (password: string): string | undefined => {
   if (!password) {
     return '비밀번호를 입력해주세요.';
@@ -24,6 +27,8 @@ const validatePassword = (password: string): string | undefined => {
     return '영어, 숫자, 특수문자를 조합하여 8자 이상이어야 해요.';
   }
 };
+
+
 
 export const SignUpValidation = (values: FormData): Partial<FormData> => {
   const errors: Partial<FormData> = {};
@@ -66,19 +71,15 @@ export const SignUpValidation = (values: FormData): Partial<FormData> => {
 
   return errors;
 };
-
-export const LoginValidation = (values: Partial<FormData>): Partial<FormData> => {
+export const LoginValidation = (values: Partial<FormData>) => {
   const errors: Partial<FormData> = {};
-
-  const userIdError = validateUserId(values.userId || '');
-  if (userIdError) {
-    errors.userId = userIdError;
+  
+  if (!values.userId) {
+    errors.userId = '아이디를 입력해주세요';
   }
-
-  const passwordError = validatePassword(values.password || '');
-  if (passwordError) {
-    errors.password = passwordError;
+  if (!values.password) {
+    errors.password = '비밀번호를 입력해주세요';
   }
-
+  
   return errors;
 };
