@@ -6,8 +6,9 @@ import { useForm } from '@/hooks/useForm';
 import { LoginValidation } from '@/lib/utils';
 import { LoginFormData } from '@/lib/types';
 import { loginInputFields } from '@/lib/data';
-import { loginRequest } from '@/lib/actions/loginAction';
+
 import { useRouter } from 'next/navigation';
+import { loginRequest } from '@/lib/actions/loginAction';
 
 function LoginPage() {
   const router = useRouter();
