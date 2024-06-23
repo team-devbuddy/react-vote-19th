@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
 
 function Header() {
   const router = useRouter();
@@ -25,33 +27,32 @@ function Header() {
   };
 
   return (
-    <header className="flex justify-between w-full max-w-[600px] px-4 py-4 bg-BG-black border-b border-gray-200">
+    <header className="flex w-full justify-between border-b border-gray-200 bg-BG-black px-10 py-4">
       <div className="flex items-center space-x-4">
-        <img src="/image/CeosLogo.svg" alt="CEOS Logo" className="h-8" />
+        <Link href="/">
+          <Image src="/colorLogo.svg" alt="logo" width={40} height={40} className="cursor-pointer" />
+        </Link>
       </div>
       <div className="flex items-center space-x-4">
         {isLoggedIn ? (
           <>
             <span className="text-white">{username}님</span>
             <button
-              className="px-2 py-1 border border-gray-600 text-gray-600 rounded hover:bg-gray-100 hover:text-black"
-              onClick={handleLogout}
-            >
+              className="rounded border border-gray-600 px-2 py-1 text-gray-600 hover:bg-gray-100 hover:text-black"
+              onClick={handleLogout}>
               로그아웃
             </button>
           </>
         ) : (
           <>
             <button
-              className="px-4 py-2 border border-gray-600 text-gray-600 rounded hover:bg-gray-100 hover:text-black"
-              onClick={() => router.push('/login')}
-            >
+              className="rounded border border-gray-600 px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-black"
+              onClick={() => router.push('/login')}>
               로그인
             </button>
             <button
-              className="px-4 py-2 bg-main text-white rounded hover:bg-main-dark"
-              onClick={() => router.push('/sign-up')}
-            >
+              className="hover:bg-main-dark rounded bg-main px-4 py-2 text-white"
+              onClick={() => router.push('/sign-up')}>
               회원가입
             </button>
           </>

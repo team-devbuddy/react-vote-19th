@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
 import './globals.css';
 import Header from '../components/layout/Header';
+import Footer from '@/components/layout/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,14 +28,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${pretendard.variable}`}>
-      <body className={`${pretendard.className} bg-black`}>
+      <body className={`${pretendard.className} `}>
         {/* Full Container */}
-        <div className="flex h-screen w-full items-center justify-center">
+        <div className="flex h-full w-full items-center justify-center">
           {/* Mobile Container */}
-          <div className="flex h-full w-full max-w-screen-md flex-col bg-BG-black">
-            <div className="flex flex-1 justify-center items-center">
-              {children}
-            </div>
+          <div className="flex h-screen w-full max-w-[600px] flex-col bg-BG-black">
+            <Header />
+            {/* Content */}
+            <div className="flex flex-1 items-center justify-center">{children}</div>
+            {/* <Footer /> */}
           </div>
         </div>
       </body>
