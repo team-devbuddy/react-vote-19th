@@ -8,8 +8,9 @@ import { SignUpValidation } from '@/lib/utils';
 import { FormData } from '@/lib/types';
 import { inputFields, teamOptions, departmentOptions } from '@/lib/data';
 import { signUpRequest } from '@/lib/actions/signUpAction';
-
+import { useRouter } from 'next/navigation';
 function SignUpPage() {
+  const router=useRouter();
   const {
     values,
     errors,
@@ -32,6 +33,7 @@ function SignUpPage() {
       const result = await signUpRequest(values);
       if (result) {
         console.log('회원가입 성공');
+        router.push('/login')
       } else {
         console.error('회원가입 실패');
       }
