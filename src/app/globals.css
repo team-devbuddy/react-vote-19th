@@ -30,3 +30,7 @@ html {
     text-wrap: balance;
   }
 }
+
+select:focus option {
+  background-color: transparent; 
+}
