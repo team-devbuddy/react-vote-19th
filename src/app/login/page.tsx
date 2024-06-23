@@ -9,6 +9,7 @@ import { loginInputFields } from '@/lib/data';
 
 import { useRouter } from 'next/navigation';
 import { loginRequest } from '@/lib/actions/loginAction';
+import { useRouter } from 'next/navigation';
 
 function LoginPage() {
   const router = useRouter();
