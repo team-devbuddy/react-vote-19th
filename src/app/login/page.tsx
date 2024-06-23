@@ -7,8 +7,10 @@ import { LoginValidation } from '@/lib/utils';
 import { LoginFormData } from '@/lib/types';
 import { loginInputFields } from '@/lib/data';
 import { loginRequest } from '@/lib/actions/loginAction';
+import { useRouter } from 'next/navigation';
 
 function LoginPage() {
+  const router = useRouter();
   const {
     values,
     errors,
@@ -27,7 +29,7 @@ function LoginPage() {
         const result = await loginRequest(values);
         console.log('로그인 성공, 토큰:', result);
         localStorage.setItem('token', result.token);
-        //페이지도이동하기
+        router.push('/main');
       } catch (error) {
         console.error('로그인 중 오류 발생', error);
       }

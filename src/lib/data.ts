@@ -17,7 +17,7 @@ export const teamOptions: TeamOption[] = [
   { id: 5, name: '펫플레이트' },
 ];
 
-export const departmentOptions = ['기획', '디자인', '프론트엔드', '백엔드'];
+export const departmentOptions = [ 'BACKEND','FRONTEND'];
 
 export const loginInputFields = [
   { id: 'userId', type: 'text', placeholder: '아이디' },
