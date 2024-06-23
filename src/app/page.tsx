@@ -13,7 +13,7 @@ function VotingMainPage() {
         <div className="flex space-x-4">
           <div
             className="flex h-40 w-40 cursor-pointer items-center justify-center rounded-lg border-2 border-main bg-BG-black text-center text-xl font-semibold hover:bg-main active:bg-main"
-            onClick={() => router.push('/vote/part-leader')}>
+            onClick={() => router.push('/vote/select')}>
             파트장 투표
             <br />
             바로가기
