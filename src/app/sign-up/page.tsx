@@ -36,6 +36,7 @@ function SignUpPage() {
       const result = await signUpRequest(values);
       if (result) {
         console.log('회원가입 성공');
+        router.push('/login')
       } else {
         console.error('회원가입 실패');
       }
