@@ -4,8 +4,9 @@ import { voteAction } from '@/lib/actions/voteAction';
 
 export default function DemoDayVote() {
   const onClickVote = async (teamId: number) => {
+    const token = localStorage.getItem('token') || '';
     try {
-      const response = await voteAction(teamId);
+      const response = await voteAction(teamId, token);
       console.log(response);
     } catch (error) {
       console.error('투표 중 오류가 발생했습니다:', error);
