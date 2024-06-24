@@ -30,7 +30,6 @@ function LoginPage() {
     onSubmit: async (values) => {
       try {
         const result = await loginRequest(values);
-        console.log('로그인 성공, 토큰:', result);
         localStorage.setItem('token', result.token);
         router.push('/');
       } catch (error) {

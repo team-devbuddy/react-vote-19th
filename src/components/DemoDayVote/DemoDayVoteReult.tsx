@@ -14,8 +14,9 @@ export default function DemoDayVoteResult() {
 
   useEffect(() => {
     const fetchVoteResult = async () => {
+      const accessToken = localStorage.getItem('token') || '';
       try {
-        const response = await voteResult();
+        const response = await voteResult(accessToken);
         const result: VoteResult[] = await response.json();
         console.log('투표 결과:', result);
         setVoteResults(result);
