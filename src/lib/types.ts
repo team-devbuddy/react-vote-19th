@@ -2,6 +2,10 @@ export interface LoginFormData {
   userId: string;
   password: string;
 }
+export const initialLoginValues: LoginFormData = {
+  userId: '',
+  password: '',
+};
 
 export interface FormData {
   name: string;
@@ -12,6 +16,15 @@ export interface FormData {
   team: string;
   department: string;
 }
+export const initialFormData: FormData = {
+  name: '',
+  userId: '',
+  password: '',
+  confirmPassword: '',
+  email: '',
+  team: '',
+  department: '',
+};
 
 export interface DropdownProps {
   label: string;

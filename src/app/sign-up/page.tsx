@@ -5,37 +5,23 @@ import { useForm } from '@/hooks/useForm';
 import InputField from '@/components/layout/InputField';
 import Dropdown from '@/components/layout/Dropdown';
 import { SignUpValidation } from '@/lib/utils';
-import { FormData } from '@/lib/types';
+import { FormData, initialFormData } from '@/lib/types';
 import { inputFields, teamOptions, departmentOptions } from '@/lib/data';
 import { signUpRequest } from '@/lib/actions/signUpAction';
 import { useRouter } from 'next/navigation';
+
 function SignUpPage() {
-  const router=useRouter();
-  const {
-    values,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    handleSubmit,
-    setFieldValue,
-  } = useForm<FormData>({
-    initialValues: {
-      name: '',
-      userId: '',
-      password: '',
-      confirmPassword: '',
-      email: '',
-      team: '',
-      department: ''
-    },
+  const router = useRouter();
+  const { values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue } = useForm<FormData>({
+    initialValues: initialFormData,
     onSubmit: async (values) => {
-      const result = await signUpRequest(values);
-      if (result) {
-        console.log('회원가입 성공');
-        router.push('/login')
-      } else {
-        console.error('회원가입 실패');
+      try {
+        const response = await signUpRequest(values);
+        const result = await response.json();
+        console.log('회원가입 성공:', result);
+        router.push('/login');
+      } catch (error) {
+        console.error('회원가입실패:', error);
       }
     },
     validate: SignUpValidation,
@@ -43,15 +29,16 @@ function SignUpPage() {
 
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  const isFormValid = Object.values(values).every(value => value !== '') &&
-                      Object.keys(errors).length === 0;
+  const isFormValid = Object.values(values).every((value) => value !== '') && Object.keys(errors).length === 0;
 
   return (
-    <div className="relative flex justify-center items-center h-screen overflow-y-auto w-screen text-white bg-transparent">
-      {activeDropdown && <div className="fixed inset-0 bg-black opacity-50 z-10" onClick={() => setActiveDropdown(null)}></div>}
-      <div className="w-full max-w-md px-4 py-8 z-20">
-        <div className="w-5/6 mx-auto">
-          <h2 className="text-2xl font-bold mt-0 mb-8 text-left">회원 가입</h2>
+    <div className="relative flex w-full items-center justify-center overflow-y-auto bg-transparent text-white">
+      {activeDropdown && (
+        <div className="fixed inset-0 z-10 bg-black opacity-50" onClick={() => setActiveDropdown(null)}></div>
+      )}
+      <div className="z-20 w-full px-4 py-8">
+        <div className="mx-auto w-5/6">
+          <h2 className="mb-8 mt-0 text-left text-2xl font-bold">회원 가입</h2>
         </div>
         <form className="bg-transparent" onSubmit={handleSubmit}>
           {inputFields.map((field) => (
@@ -83,7 +70,7 @@ function SignUpPage() {
             />
           )}
 
-          <div className="mb-5 w-5/6 mx-auto flex justify-between items-center relative space-x-4">
+          <div className="flex w-5/6 mx-auto items-center justify-between gap-4">
             <InputField
               id="email"
               type="email"
@@ -96,17 +83,16 @@ function SignUpPage() {
               handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
             />
             <button
-              className="mb-4  min-w-12 bg-gray-600 hover:bg-gray-700 text-white py-1 px-1.5 rounded focus:outline-none focus:shadow-outline"
-              type="button"
-            >
+              className="focus:shadow-outline mb-4 w-16 min-w-12 rounded bg-gray-600 px-2 py-1 text-white hover:bg-gray-700 focus:outline-none"
+              type="button">
               인증
             </button>
           </div>
 
-          <div className="mb-5 w-5/6 mx-auto flex justify-between relative space-x-4">
+          <div className="relative mx-auto mb-5 flex w-5/6 justify-between space-x-4">
             <Dropdown
               label="팀 선택"
-              options={teamOptions.map(option => option.name)}
+              options={teamOptions.map((option) => option.name)}
               selectedOption={values.team || ''}
               setSelectedOption={(value) => setFieldValue('team', value)}
               isOpen={activeDropdown === 'team'}
@@ -126,10 +112,9 @@ function SignUpPage() {
 
           <div className="flex items-center justify-center">
             <button
-              className={`${isFormValid ? 'bg-main' : 'bg-gray-600'} mt-10 hover:bg-gray-700 text-white font-bold py-2 w-5/6 rounded focus:outline-none focus:shadow-outline`}
+              className={`${isFormValid ? 'bg-main' : 'bg-gray-600'} focus:shadow-outline mt-10 w-5/6 rounded py-2 font-bold text-white hover:bg-gray-700 focus:outline-none`}
               type="submit"
-              disabled={!isFormValid}
-            >
+              disabled={!isFormValid}>
               가입하기
             </button>
           </div>

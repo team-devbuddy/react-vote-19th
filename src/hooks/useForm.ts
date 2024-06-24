@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { FormData } from '@/lib/types';
 
 interface UseFormProps<T> {
   initialValues: T;
@@ -17,20 +16,18 @@ export function useForm<T>({ initialValues, onSubmit, validate }: UseFormProps<T
     setErrors(validate(values));
   }, [values, validate]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = event.target;
-    setValues({ ...values, [id]: value });
+  const handleChange = ({ target: { id, value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setValues(prevValues => ({ ...prevValues, [id]: value }));
   };
 
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    const { id } = event.target;
-    setTouched({ ...touched, [id]: true });
+  const handleBlur = ({ target: { id } }: React.FocusEvent<HTMLInputElement>) => {
+    setTouched(prevTouched => ({ ...prevTouched, [id]: true }));
     setErrors(validate(values));
   };
 
   const setFieldValue = (id: string, value: string) => {
-    setValues((prevValues) => ({ ...prevValues, [id]: value }));
-    setTouched((prevTouched) => ({ ...prevTouched, [id]: true }));
+    setValues(prevValues => ({ ...prevValues, [id]: value }));
+    setTouched(prevTouched => ({ ...prevTouched, [id]: true }));
   };
 
   const resetForm = (newValues: T) => {
@@ -45,7 +42,7 @@ export function useForm<T>({ initialValues, onSubmit, validate }: UseFormProps<T
     const validationErrors = validate(values);
     setErrors(validationErrors);
 
-    if (Object.keys(validationErrors).length === 0) {
+    if (!Object.keys(validationErrors).length) {
       await onSubmit(values);
     }
     setIsLoading(false);
