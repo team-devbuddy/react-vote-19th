@@ -32,7 +32,7 @@ function LoginPage() {
         const result = await loginRequest(values);
         console.log('로그인 성공, 토큰:', result);
         localStorage.setItem('token', result.token);
-        router.push('/main');
+        router.push('/');
       } catch (error) {
         console.error('로그인 중 오류 발생', error);
       }
