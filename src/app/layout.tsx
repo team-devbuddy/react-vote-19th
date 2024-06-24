@@ -27,7 +27,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
+ return (
     <html lang="ko" className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
         <RecoilProvider>

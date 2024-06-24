@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { FormData } from '@/lib/types';
 
 interface UseFormProps<T> {
   initialValues: T;
