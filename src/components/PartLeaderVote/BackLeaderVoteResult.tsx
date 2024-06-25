@@ -29,7 +29,6 @@ export default function BackLeaderVoteResult() {
             (candidate: Candidate) => candidate.id >= 19 && candidate.id <= 28,
           );
           setCandidateList(filteredCandidates);
-          console.log('Candidates:', filteredCandidates);
         } else {
           console.error('Expected an array of candidates');
         }
