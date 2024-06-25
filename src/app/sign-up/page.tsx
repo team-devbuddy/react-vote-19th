@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import { useForm } from '@/hooks/useForm';
-import { useForm } from '@/hooks/useForm';
+
 import InputField from '@/components/layout/InputField';
 import Dropdown from '@/components/layout/Dropdown';
-import Dropdown from '@/components/layout/Dropdown';
+
 import { SignUpValidation } from '@/lib/utils';
 import { FormData } from '@/lib/types';
 import { inputFields, teamOptions, departmentOptions } from '@/lib/data';
@@ -26,7 +26,6 @@ function SignUpPage() {
     onSubmit: async (values) => {
       const result = await signUpRequest(values);
       if (result) {
-        console.log('회원가입 성공');
         router.push('/login');
       } else {
         console.error('회원가입 실패');
@@ -53,18 +52,13 @@ function SignUpPage() {
             <InputField
               key={field.id}
               id={field.id}
-              id={field.id}
               type={field.type}
               placeholder={field.placeholder}
               value={values[field.id as keyof FormData] || ''}
               touched={!!touched[field.id as keyof FormData]}
               error={errors[field.id as keyof FormData] || ''}
-              value={values[field.id as keyof FormData] || ''}
-              touched={!!touched[field.id as keyof FormData]}
-              error={errors[field.id as keyof FormData] || ''}
               handleChange={handleChange}
               handleBlur={handleBlur}
-              handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
               handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
             />
           ))}
@@ -80,7 +74,6 @@ function SignUpPage() {
               handleChange={handleChange}
               handleBlur={handleBlur}
               handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
-              handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
             />
           )}
 
@@ -90,12 +83,10 @@ function SignUpPage() {
               type="email"
               placeholder="이메일 주소"
               value={values.email || ''}
-              value={values.email || ''}
               touched={!!touched.email}
               error={errors.email || ''}
               handleChange={handleChange}
               handleBlur={handleBlur}
-              handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
               handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
             />
             <button
