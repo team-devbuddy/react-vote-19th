@@ -1,15 +1,20 @@
 'use client';
 
 import { voteAction } from '@/lib/actions/voteAction';
+import { useRouter } from 'next/navigation';
 
 export default function DemoDayVote() {
+  const router = useRouter();
+
   const onClickVote = async (teamId: number) => {
     const token = localStorage.getItem('token') || '';
     try {
       const response = await voteAction(teamId, token);
-      console.log(response);
+      if (response.ok) {
+        router.push('/demo-day-vote/result');
+      }
     } catch (error) {
-      console.error('투표 중 오류가 발생했습니다:', error);
+      alert('중복 투표 불가능합니다.');
     }
   };
 
@@ -26,22 +31,30 @@ export default function DemoDayVote() {
               <p className="text-xs text-gray-400">베뉴 큐레이팅 서비스</p>
             </div>
 
-            <div className="flex h-20 w-40 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-main bg-BG-black text-center hover:bg-main active:bg-main">
+            <div
+              onClick={() => onClickVote(2)}
+              className="flex h-20 w-40 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-main bg-BG-black text-center hover:bg-main active:bg-main">
               <p className="text-xl font-semibold">AZITO</p>
               <p className="text-xs text-gray-400">라이브아이돌 예약 플랫폼</p>
             </div>
 
-            <div className="flex h-20 w-40 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-main bg-BG-black text-center hover:bg-main active:bg-main">
+            <div
+              onClick={() => onClickVote(3)}
+              className="flex h-20 w-40 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-main bg-BG-black text-center hover:bg-main active:bg-main">
               <p className="text-xl font-semibold">커플로그</p>
               <p className="text-xs text-gray-400">데이트 장소 큐레이션 서비스</p>
             </div>
 
-            <div className="flex h-20 w-40 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-main bg-BG-black text-center hover:bg-main active:bg-main">
+            <div
+              onClick={() => onClickVote(4)}
+              className="flex h-20 w-40 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-main bg-BG-black text-center hover:bg-main active:bg-main">
               <p className="text-xl font-semibold">TIG</p>
               <p className="text-xs text-gray-400">스포츠 여가 예약 통합 플랫폼</p>
             </div>
 
-            <div className="flex h-20 w-40 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-main bg-BG-black text-center hover:bg-main active:bg-main">
+            <div
+              onClick={() => onClickVote(5)}
+              className="flex h-20 w-40 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-main bg-BG-black text-center hover:bg-main active:bg-main">
               <p className="text-xl font-semibold">펫플레이트</p>
               <p className="text-xs text-gray-400">보충제 e커머스 플랫폼</p>
             </div>

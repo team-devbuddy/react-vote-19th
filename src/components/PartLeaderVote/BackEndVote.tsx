@@ -9,7 +9,7 @@ interface Candidate {
   part: string;
 }
 
-export default function FrontEndVote() {
+export default function BackEndVote() {
   const [candidateList, setCandidateList] = useState<Candidate[]>([]);
   const router = useRouter();
 
@@ -20,7 +20,7 @@ export default function FrontEndVote() {
       console.log('투표 결과:', response);
       if (response.ok) {
         alert('투표가 완료되었습니다.');
-        router.push('/vote/front-end/result');
+        router.push('/vote/back-end/result');
       }
     } catch (error) {
       console.error('투표 중 오류가 발생했습니다:', error);
@@ -34,12 +34,13 @@ export default function FrontEndVote() {
         const response = await candiateList(accessToken);
 
         const candidates = response.members || [];
+        console.log('Candidates123123:', candidates);
 
         if (Array.isArray(candidates)) {
-          // Select candidates with index 0 to 9
-          const filteredCandidates = candidates.slice(0, 10);
+          const filteredCandidates = candidates.filter(
+            (candidate: Candidate) => candidate.id >= 19 && candidate.id <= 28,
+          );
           setCandidateList(filteredCandidates);
-          console.log('Candidates:', filteredCandidates);
         } else {
           console.error('Expected an array of candidates');
         }
@@ -53,7 +54,7 @@ export default function FrontEndVote() {
   return (
     <div className="flex flex-col items-center justify-center bg-BG-black text-white">
       <main className="flex w-full flex-grow flex-col items-center justify-center px-4">
-        <h1 className="mb-8 text-center text-3xl font-bold">프론트 파트장 투표</h1>
+        <h1 className="mb-8 text-center text-3xl font-bold">백엔드 파트장 투표</h1>
         <div className="flex gap-12">
           <div className="flex flex-wrap justify-center gap-6 px-10">
             {candidateList.map((data, index) => (
