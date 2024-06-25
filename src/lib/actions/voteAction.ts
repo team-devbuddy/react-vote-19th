@@ -12,6 +12,20 @@ export const voteAction = async (teamId: number, token: string) => {
   return response;
 };
 
+export const LeaderVoteAction = async (memberId: number, token: string) => {
+  const response = await fetch(`http://43.201.123.205:8080/votes/leader/${memberId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Access: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      memberId,
+    }),
+  });
+  return response;
+};
+
 export const voteResult = async (token: string) => {
   const response = await fetch(`http://43.201.123.205:8080/votes/teams`, {
     method: 'GET',

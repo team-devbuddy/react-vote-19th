@@ -1,7 +1,7 @@
 'use client';
-import { candiateList, voteAction } from '@/lib/actions/voteAction';
+import { LeaderVoteAction, candiateList } from '@/lib/actions/voteAction';
 import { useRouter } from 'next/navigation';
-import { MouseEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Candidate {
   id: number;
@@ -13,14 +13,14 @@ export default function FrontEndVote() {
   const [candidateList, setCandidateList] = useState<Candidate[]>([]);
   const router = useRouter();
 
-  const onClickVote = async (teamId: number) => {
+  const onClickVote = async (memberId: number) => {
     const token = localStorage.getItem('token') || '';
     try {
-      const response = await voteAction(teamId, token);
+      const response = await LeaderVoteAction(memberId, token);
       console.log('투표 결과:', response);
       if (response.ok) {
         alert('투표가 완료되었습니다.');
-        router.push('/front-end-vote/result');
+        router.push('/vote/front-end/result');
       }
     } catch (error) {
       console.error('투표 중 오류가 발생했습니다:', error);
@@ -33,7 +33,6 @@ export default function FrontEndVote() {
       try {
         const response = await candiateList(accessToken);
 
-        // Assuming the response has a `data` key that contains the array of candidates
         const candidates = response.members || [];
 
         if (Array.isArray(candidates)) {
@@ -57,7 +56,7 @@ export default function FrontEndVote() {
         <h1 className="mb-8 text-center text-3xl font-bold">프론트 파트장 투표</h1>
         <div className="flex gap-12">
           <div className="flex flex-wrap justify-center gap-6 px-10">
-            {candidateList.map((data) => (
+            {candidateList.map((data, index) => (
               <div
                 key={data.id}
                 onClick={() => onClickVote(data.id)}
