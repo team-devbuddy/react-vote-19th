@@ -1,9 +1,7 @@
 import { LoginFormData } from '../types';
 
 export const loginRequest = async (values: LoginFormData) => {
-  const url = 'http://43.201.123.205:8080/login';
-
-  const response = await fetch(url, {
+  const response = await fetch('http://43.201.123.205:8080/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -15,15 +13,5 @@ export const loginRequest = async (values: LoginFormData) => {
     }),
   });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error(`API call failed with status: ${response.status}, message: ${errorText}`);
-    throw new Error(`API call failed with status: ${response.status}, message: ${errorText}`);
-  }
-  const result = await response.json();
-
-  localStorage.setItem('token', result.token);
-  localStorage.setItem('username', result.username);
-
-  return result;
+  return response;
 };

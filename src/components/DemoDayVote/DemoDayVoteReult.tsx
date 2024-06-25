@@ -18,7 +18,7 @@ export default function DemoDayVoteResult() {
       try {
         const response = await voteResult(accessToken);
         const result: VoteResult[] = await response.json();
-
+        console.log('투표 결과:', result);
         setVoteResults(result);
       } catch (error) {
         console.error('투표 결과 조회 중 오류 발생', error);

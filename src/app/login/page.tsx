@@ -1,30 +1,33 @@
 'use client';
-
 import React from 'react';
 import InputField from '@/components/layout/InputField';
 import { useForm } from '@/hooks/useForm';
 
 import { LoginValidation } from '@/lib/utils';
-
-import { LoginFormData } from '@/lib/types';
+import { LoginFormData, initialLoginValues } from '@/lib/types';
 import { loginInputFields } from '@/lib/data';
 import { loginRequest } from '@/lib/actions/loginAction';
 import { useRouter } from 'next/navigation';
+import { useSetRecoilState } from 'recoil';
+import { authState } from '@/lib/state/atom';
 
 function LoginPage() {
   const router = useRouter();
+  const setAuthState = useSetRecoilState(authState);
   const { values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue } = useForm<LoginFormData>({
-    initialValues: {
-      userId: '',
-      password: '',
-    },
+    initialValues: initialLoginValues,
     onSubmit: async (values) => {
       try {
-        const result = await loginRequest(values);
+        const result = await (await loginRequest(values)).json();
+        setAuthState({
+          isLoggedIn: true,
+          username: result.username,
+        });
         localStorage.setItem('token', result.token);
+        localStorage.setItem('username', result.username);
         router.push('/');
       } catch (error) {
-        console.error('로그인 중 오류 발생', error);
+        console.error('로그인 실패', error);
       }
     },
     validate: LoginValidation,
@@ -32,6 +35,7 @@ function LoginPage() {
 
   const isFormValid = Object.values(values).every((value) => value !== '') && Object.keys(errors).length === 0;
 
+  
   return (
     <div className="relative flex w-full items-center justify-center overflow-y-auto bg-BG-black text-white">
       <div className="z-20 w-full px-4 py-8">
