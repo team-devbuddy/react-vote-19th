@@ -4,7 +4,7 @@ import { teamOptions } from '../data';
 export const signUpRequest = async (values: FormData) => {
   const url = `http://43.201.123.205:8080/members/join`;
 
-  const team = teamOptions.find(option => option.name === values.team);
+  const team = teamOptions.find((option) => option.name === values.team);
   const teamId = team ? team.id : null;
 
   if (!teamId) {
@@ -20,14 +20,11 @@ export const signUpRequest = async (values: FormData) => {
     teamId: teamId,
   };
 
-  console.log("Requesting URL:", url); 
-  console.log("Request Body:", requestBody);
-
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      Accept: 'application/json',
     },
     body: JSON.stringify(requestBody),
   });

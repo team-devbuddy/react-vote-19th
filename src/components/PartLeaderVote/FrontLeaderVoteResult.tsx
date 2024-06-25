@@ -27,7 +27,6 @@ export default function FrontLeaderVoteResult() {
           // Select candidates with index 0 to 9
           const filteredCandidates = sortedCandidates.slice(0, 10);
           setCandidateList(filteredCandidates);
-          console.log('Candidates:', filteredCandidates);
         } else {
           console.error('Expected an array of candidates');
         }
