@@ -23,7 +23,7 @@ function Header() {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     setIsLoggedIn(false);
-    router.push('/main');
+    router.push('/');
   };
 
   return (
