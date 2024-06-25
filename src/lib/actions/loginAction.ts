@@ -1,15 +1,7 @@
 import { LoginFormData } from '../types';
 
 export const loginRequest = async (values: LoginFormData) => {
-  const url = 'http://43.201.123.205:8080/login';
-
-  console.log("Sending login request to URL:", url);
-  console.log("Request body:", {
-    loginId: values.userId,
-    password: values.password,
-  });
-
-  const response = await fetch(url, {
+  const response = await fetch('http://43.201.123.205:8080/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -21,14 +13,5 @@ export const loginRequest = async (values: LoginFormData) => {
     }),
   });
 
-  console.log("Response status:", response.status);
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error(`API call failed with status: ${response.status}, message: ${errorText}`);
-    throw new Error(`API call failed with status: ${response.status}, message: ${errorText}`);
-  }
-  const result = await response.json();
-  console.log("Response result:", result);
-  return result;
+  return response;
 };
