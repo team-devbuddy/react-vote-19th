@@ -34,16 +34,15 @@ export default function DemoDayVoteResult() {
 
         <div className="flex w-full gap-12">
           <div className="flex w-full flex-col gap-6">
-            {voteResults.map((result) => (
+            {voteResults.map((result, index) => (
               <div
                 key={result.id}
-                className="flex w-full cursor-pointer items-center justify-between rounded-lg border-2 border-main bg-main px-6 py-3 text-center hover:bg-main active:bg-main">
+                className={`flex w-full cursor-pointer items-center justify-between rounded-lg border-2 border-main px-6 py-3 text-center hover:bg-main active:bg-main ${index === 0 ? 'bg-main' : ''}`}>
                 <div className="flex items-center gap-6">
                   <div className="rounded-lg bg-white">
                     <p className="px-3 text-xl font-semibold text-BG-black">{result.id}</p>
                   </div>
                   <p className="text-2xl font-semibold">{result.name}</p>
-                  <p className="text-xs text-gray-200">{result.voteCount}</p>
                 </div>
                 <div className="flex items-center text-2xl">{result.voteCount}</div>
               </div>
