@@ -21,20 +21,22 @@ function LoginPage() {
     initialValues: initialLoginValues,
     onSubmit: async (values) => {
       try {
+        const response = await await loginRequest(values);
         const result = await (await loginRequest(values)).json();
-        if (result.success) {
-        setAuthState({
-          isLoggedIn: true,
-          username: result.username,
-        });
-        localStorage.setItem('token', result.token);
-        localStorage.setItem('username', result.username);
-        router.push('/');
-      } else{
-        setModalMessage('로그인 실패: 아이디와 비밀번호를 확인해주세요.');
-        setModalOpen(true);
-      } 
-    } catch (error) {
+
+        if (response.ok) {
+          setAuthState({
+            isLoggedIn: true,
+            username: result.username,
+          });
+          localStorage.setItem('token', result.token);
+          localStorage.setItem('username', result.username);
+          router.push('/');
+        } else {
+          setModalMessage('로그인 실패: 아이디와 비밀번호를 확인해주세요.');
+          setModalOpen(true);
+        }
+      } catch (error) {
         console.error('로그인 실패', error);
         setModalMessage('로그인 중 오류가 발생했습니다. 다시 시도해 주세요.');
         setModalOpen(true);
@@ -45,7 +47,6 @@ function LoginPage() {
 
   const isFormValid = Object.values(values).every((value) => value !== '') && Object.keys(errors).length === 0;
 
-  
   return (
     <div className="relative flex w-full items-center justify-center overflow-y-auto bg-BG-black text-white">
       <div className="z-20 w-full px-4 py-8">
