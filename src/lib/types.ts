@@ -34,3 +34,10 @@ export interface InputFieldProps {
   handleBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   handleClear: (id: string, value: string) => void;
 }
+
+
+export interface ErrorModalProps {
+  message: string;
+  isOpen: boolean;
+  onClose: () => void;
+}

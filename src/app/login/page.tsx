@@ -3,7 +3,7 @@
 import React from 'react';
 import InputField from '@/components/layout/InputField';
 import { useForm } from '@/hooks/useForm';
-
+import ErrorModal from '@/components/ErrorModal';
 import { LoginValidation } from '@/lib/utils';
 
 import { LoginFormData } from '@/lib/types';
@@ -66,6 +66,7 @@ function LoginPage() {
           </div>
         </form>
       </div>
+      <ErrorModal message={modalMessage} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 }

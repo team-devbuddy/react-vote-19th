@@ -5,7 +5,7 @@ import { useForm } from '@/hooks/useForm';
 
 import InputField from '@/components/layout/InputField';
 import Dropdown from '@/components/layout/Dropdown';
-
+import ErrorModal from '@/components/ErrorModal';
 import { SignUpValidation } from '@/lib/utils';
 import { FormData } from '@/lib/types';
 import { inputFields, teamOptions, departmentOptions } from '@/lib/data';
@@ -13,6 +13,9 @@ import { signUpRequest } from '@/lib/actions/signUpAction';
 import { useRouter } from 'next/navigation';
 function SignUpPage() {
   const router = useRouter();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
   const { values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue } = useForm<FormData>({
     initialValues: {
       name: '',
@@ -131,6 +134,7 @@ function SignUpPage() {
           </div>
         </form>
       </div>
+      <ErrorModal message={modalMessage} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 }
