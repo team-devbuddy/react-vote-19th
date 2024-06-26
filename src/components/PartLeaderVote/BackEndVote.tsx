@@ -37,7 +37,7 @@ export default function BackEndVote() {
 
         if (Array.isArray(candidates)) {
           const filteredCandidates = candidates.filter(
-            (candidate: Candidate) => candidate.id >= 19 && candidate.id <= 28,
+            (candidate: Candidate) => candidate.id >= 15 && candidate.id <= 24,
           );
           setCandidateList(filteredCandidates);
         } else {

@@ -32,12 +32,16 @@ export default function FrontEndVote() {
       const accessToken = localStorage.getItem('token') || '';
       try {
         const response = await candiateList(accessToken);
+        console.log('투표 결과:', response);
 
-        const candidates = response.members || [];
+        const candidates = response || [];
 
         if (Array.isArray(candidates)) {
           // Select candidates with index 0 to 9
-          const filteredCandidates = candidates.slice(0, 10);
+          const filteredCandidates = candidates.filter(
+            (candidate: Candidate) => candidate.id >= 5 && candidate.id <= 14,
+          );
+          console.log('후보자 목록:', filteredCandidates);
           setCandidateList(filteredCandidates);
         } else {
           console.error('Expected an array of candidates');
@@ -55,7 +59,7 @@ export default function FrontEndVote() {
         <h1 className="mb-8 text-center text-3xl font-bold">프론트 파트장 투표</h1>
         <div className="flex gap-12">
           <div className="flex flex-wrap justify-center gap-6 px-10">
-            {candidateList.map((data, index) => (
+            {candidateList.map((data) => (
               <div
                 key={data.id}
                 onClick={() => onClickVote(data.id)}
