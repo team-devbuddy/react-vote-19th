@@ -5,7 +5,7 @@ import { useForm } from '@/hooks/useForm';
 
 import InputField from '@/components/layout/InputField';
 import Dropdown from '@/components/layout/Dropdown';
-
+import ErrorModal from '@/components/ErrorModal';
 import { SignUpValidation } from '@/lib/utils';
 import { FormData, initialFormData } from '@/lib/types';
 import { inputFields, teamOptions, departmentOptions } from '@/lib/data';
@@ -14,16 +14,28 @@ import { useRouter } from 'next/navigation';
 
 function SignUpPage() {
   const router = useRouter();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
   const { values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue } = useForm<FormData>({
     initialValues: initialFormData,
-    onSubmit: async (values) => {
+      onSubmit: async (values) => {
       try {
         const response = await signUpRequest(values);
         const result = await response.json();
-        console.log('회원가입 성공:', result);
-        router.push('/login');
+        if (response.ok) {
+          console.log('회원가입 성공:', result);
+          router.push('/login');
+        } else {
+          throw new Error(result.message || '회원가입 실패');
+        }
       } catch (error) {
-        console.error('회원가입실패:', error);
+        if (error instanceof Error) { 
+          setModalMessage(error.message); 
+        } else {
+          setModalMessage('알 수 없는 오류가 발생했습니다.');
+        }
+        setModalOpen(true);
       }
     },
     validate: SignUpValidation,
@@ -122,6 +134,7 @@ function SignUpPage() {
           </div>
         </form>
       </div>
+      <ErrorModal message={modalMessage} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 }
