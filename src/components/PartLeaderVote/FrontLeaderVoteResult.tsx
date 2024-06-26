@@ -19,15 +19,16 @@ export default function FrontLeaderVoteResult() {
       try {
         const response = await candiateList(accessToken);
 
-        const candidates = response.members || [];
+        const candidates = response || [];
 
         if (Array.isArray(candidates)) {
           // Sort candidates by voteCount in descending order
           const sortedCandidates = candidates.sort((a: Candidate, b: Candidate) => b.voteCount - a.voteCount);
           // Select candidates with index 0 to 9
-          const filteredCandidates = sortedCandidates.slice(0, 10);
+          const filteredCandidates = candidates.filter(
+            (candidate: Candidate) => candidate.id >= 5 && candidate.id <= 14,
+          );
           setCandidateList(filteredCandidates);
-          console.log('Candidates:', filteredCandidates);
         } else {
           console.error('Expected an array of candidates');
         }
