@@ -1,5 +1,5 @@
 export const voteAction = async (teamId: number, token: string) => {
-  const response = await fetch(`http://43.201.123.205:8080/votes/demo/${teamId}`, {
+  const response = await fetch(`https://hyeongjun.store/votes/demo/${teamId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -13,7 +13,7 @@ export const voteAction = async (teamId: number, token: string) => {
 };
 
 export const LeaderVoteAction = async (memberId: number, token: string) => {
-  const response = await fetch(`http://43.201.123.205:8080/votes/leader/${memberId}`, {
+  const response = await fetch(`https://hyeongjun.store/votes/leader/${memberId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ export const LeaderVoteAction = async (memberId: number, token: string) => {
 };
 
 export const voteResult = async (token: string) => {
-  const response = await fetch(`http://43.201.123.205:8080/votes/teams`, {
+  const response = await fetch(`https://hyeongjun.store/votes/teams`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ export const voteResult = async (token: string) => {
 };
 
 export const candiateList = async (token: string) => {
-  const response = await fetch(`http://43.201.123.205:8080/votes/candidates`, {
+  const response = await fetch(`https://hyeongjun.store/votes/candidates`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

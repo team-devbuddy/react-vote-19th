@@ -7,28 +7,23 @@ import InputField from '@/components/layout/InputField';
 import Dropdown from '@/components/layout/Dropdown';
 
 import { SignUpValidation } from '@/lib/utils';
-import { FormData } from '@/lib/types';
+import { FormData, initialFormData } from '@/lib/types';
 import { inputFields, teamOptions, departmentOptions } from '@/lib/data';
 import { signUpRequest } from '@/lib/actions/signUpAction';
 import { useRouter } from 'next/navigation';
+
 function SignUpPage() {
   const router = useRouter();
   const { values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue } = useForm<FormData>({
-    initialValues: {
-      name: '',
-      userId: '',
-      password: '',
-      confirmPassword: '',
-      email: '',
-      team: '',
-      department: '',
-    },
+    initialValues: initialFormData,
     onSubmit: async (values) => {
-      const result = await signUpRequest(values);
-      if (result) {
+      try {
+        const response = await signUpRequest(values);
+        const result = await response.json();
+        console.log('회원가입 성공:', result);
         router.push('/login');
-      } else {
-        console.error('회원가입 실패');
+      } catch (error) {
+        console.error('회원가입실패:', error);
       }
     },
     validate: SignUpValidation,
@@ -77,7 +72,7 @@ function SignUpPage() {
             />
           )}
 
-          <div className="relative mx-auto mb-5 flex w-5/6 items-center justify-between space-x-4">
+          <div className="flex w-5/6 mx-auto items-center justify-between gap-4">
             <InputField
               id="email"
               type="email"
@@ -90,7 +85,7 @@ function SignUpPage() {
               handleClear={(id, value) => setFieldValue(id as keyof FormData, value)}
             />
             <button
-              className="focus:shadow-outline mb-4 min-w-12 rounded bg-gray-600 px-1.5 py-1 text-white hover:bg-gray-700 focus:outline-none"
+              className="focus:shadow-outline mb-4 w-16 min-w-12 rounded bg-gray-600 px-2 py-1 text-white hover:bg-gray-700 focus:outline-none"
               type="button">
               인증
             </button>

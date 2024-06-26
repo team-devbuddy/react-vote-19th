@@ -2,28 +2,18 @@ import React from 'react';
 import Image from 'next/image';
 import CheckBox from '/public/image/CheckBox.svg';
 import Xmark from '/public/image/Xmark.svg';
-import {InputFieldProps} from '@/lib/types'
+import { InputFieldProps } from '@/lib/types';
 
-
-const InputField: React.FC<InputFieldProps> = ({
-  id,
-  type,
-  placeholder,
-  value,
-  touched,
-  error,
-  handleChange,
-  handleBlur,
-  handleClear,
-}) => {
+const InputField = ({
+  id, type, placeholder, value, touched, error, handleChange, handleBlur, handleClear
+}: InputFieldProps) => {
   const maxLength = id === 'name' ? 10 : id === 'userId' ? 12 : undefined;
+  const borderColor = touched && error ? 'border-gray-600' : touched && !error ? 'border-main' : 'border-gray-600';
 
   return (
     <div className="relative mb-2 w-5/6 mx-auto">
       <input
-        className={`w-full bg-transparent border-b-2 py-2 px-3 text-white placeholder-gray-500 focus:outline-none ${
-          touched && error ? 'border-gray-600' : touched && !error ? 'border-main' : 'border-gray-600'
-        }`}
+        className={`w-full bg-transparent border-b-2 py-2 px-3 text-white placeholder-gray-500 focus:outline-none ${borderColor}`}
         id={id}
         type={type}
         placeholder={placeholder}

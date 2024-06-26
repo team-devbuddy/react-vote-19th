@@ -17,7 +17,7 @@ export default function FrontEndVote() {
     const token = localStorage.getItem('token') || '';
     try {
       const response = await LeaderVoteAction(memberId, token);
-
+      console.log('투표 결과:', response);
       if (response.ok) {
         alert('투표가 완료되었습니다.');
         router.push('/vote/front-end/result');
@@ -39,6 +39,7 @@ export default function FrontEndVote() {
           // Select candidates with index 0 to 9
           const filteredCandidates = candidates.slice(0, 10);
           setCandidateList(filteredCandidates);
+          console.log('Candidates:', filteredCandidates);
         } else {
           console.error('Expected an array of candidates');
         }

@@ -1,62 +1,47 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { authState } from '@/lib/state/atom';
 
 function Header() {
-  const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const name = localStorage.getItem('username');
-    if (token) {
-      setIsLoggedIn(true);
-      setUsername(name || '');
-    }
-  }, []);
+  const { isLoggedIn, username } = useRecoilValue(authState);
+  const setAuthState = useSetRecoilState(authState);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    setIsLoggedIn(false);
-    router.push('/');
+    setAuthState({
+      isLoggedIn: false,
+      username: '',
+    });
   };
 
+  const authButtons = isLoggedIn 
+    ? [
+      { label: `${username}님`, href: '/', onClick: undefined, className: 'text-white text-sm sm:text-lg' },
+      { label: '로그아웃', href: '/', onClick: handleLogout, className: 'rounded border border-gray-600 px-2 py-1 text-gray-600 hover:bg-gray-100 hover:text-black text-sm sm:px-4 sm:py-2 sm:text-lg' },
+    ]
+    : [
+      { label: '로그인', href: '/login', onClick: undefined, className: 'rounded border border-gray-600 px-2 py-1 text-gray-600 hover:bg-gray-100 hover:text-black text-sm sm:px-4 sm:py-2 sm:text-lg' },
+      { label: '회원가입', href: '/sign-up', onClick: undefined, className: 'hover:bg-main-dark rounded bg-main px-2 py-1 text-white text-sm sm:px-4 sm:py-2 sm:text-lg' },
+    ];
+
   return (
-    <header className="flex w-full justify-between border-b border-gray-200 bg-BG-black px-10 py-4">
-      <div className="flex items-center space-x-4">
+    <header className="flex w-full justify-between border-b border-gray-200 bg-BG-black px-10 sm:px-14 py-4">
+      <div className="flex items-center space-x-2 sm:space-x-4">
         <Link href="/">
           <Image src="/colorLogo.svg" alt="logo" width={40} height={40} className="cursor-pointer" />
         </Link>
       </div>
-      <div className="flex items-center space-x-4">
-        {isLoggedIn ? (
-          <>
-            <span className="text-white">{username}님</span>
-            <button
-              className="rounded border border-gray-600 px-2 py-1 text-gray-600 hover:bg-gray-100 hover:text-black"
-              onClick={handleLogout}>
-              로그아웃
+      <div className="flex items-center space-x-2 sm:space-x-4">
+        {authButtons.map((button, index) => (
+          <Link key={index} href={button.href}>
+            <button onClick={button.onClick} className={button.className}>
+              {button.label}
             </button>
-          </>
-        ) : (
-          <>
-            <button
-              className="rounded border border-gray-600 px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-black"
-              onClick={() => router.push('/login')}>
-              로그인
-            </button>
-            <button
-              className="hover:bg-main-dark rounded bg-main px-4 py-2 text-white"
-              onClick={() => router.push('/sign-up')}>
-              회원가입
-            </button>
-          </>
-        )}
+          </Link>
+        ))}
       </div>
     </header>
   );

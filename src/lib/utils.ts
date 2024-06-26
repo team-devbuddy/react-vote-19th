@@ -71,6 +71,7 @@ export const SignUpValidation = (values: FormData): Partial<FormData> => {
 
   return errors;
 };
+
 export const LoginValidation = (values: Partial<FormData>) => {
   const errors: Partial<FormData> = {};
   
