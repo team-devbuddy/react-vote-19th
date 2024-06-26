@@ -22,8 +22,11 @@ function LoginPage() {
           isLoggedIn: true,
           username: result.username,
         });
+        localStorage.setItem('authState', JSON.stringify({ 
+          isLoggedIn: true, 
+          username: result.username 
+        }));
         localStorage.setItem('token', result.token);
-        localStorage.setItem('username', result.username);
         router.push('/');
       } catch (error) {
         console.error('로그인 실패', error);
@@ -34,7 +37,6 @@ function LoginPage() {
 
   const isFormValid = Object.values(values).every((value) => value !== '') && Object.keys(errors).length === 0;
 
-  
   return (
     <div className="relative flex w-full items-center justify-center overflow-y-auto bg-BG-black text-white">
       <div className="z-20 w-full px-4 py-8">
