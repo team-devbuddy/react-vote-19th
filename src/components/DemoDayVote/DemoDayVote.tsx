@@ -10,12 +10,13 @@ export default function DemoDayVote() {
     const token = localStorage.getItem('token') || '';
     try {
       const response = await voteAction(teamId, token);
+      const data = await response.json();
       if (response.ok) {
         router.push('/demo-day-vote/result');
+      } else if (response.status === 400) {
+        alert(data.message);
       }
-    } catch (error) {
-      alert('중복 투표 불가능합니다.');
-    }
+    } catch (error) {}
   };
 
   return (
