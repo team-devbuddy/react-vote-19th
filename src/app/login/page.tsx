@@ -1,8 +1,8 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import InputField from '@/components/layout/InputField';
 import { useForm } from '@/hooks/useForm';
-
+import ErrorModal from '@/components/ErrorModal';
 import { LoginValidation } from '@/lib/utils';
 import { LoginFormData, initialLoginValues } from '@/lib/types';
 import { loginInputFields } from '@/lib/data';
@@ -14,11 +14,15 @@ import { authState } from '@/lib/state/atom';
 function LoginPage() {
   const router = useRouter();
   const setAuthState = useSetRecoilState(authState);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
   const { values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue } = useForm<LoginFormData>({
     initialValues: initialLoginValues,
     onSubmit: async (values) => {
       try {
         const result = await (await loginRequest(values)).json();
+        if (result.success) {
         setAuthState({
           isLoggedIn: true,
           username: result.username,
@@ -26,8 +30,14 @@ function LoginPage() {
         localStorage.setItem('token', result.token);
         localStorage.setItem('username', result.username);
         router.push('/');
-      } catch (error) {
+      } else{
+        setModalMessage('로그인 실패: 아이디와 비밀번호를 확인해주세요.');
+        setModalOpen(true);
+      } 
+    } catch (error) {
         console.error('로그인 실패', error);
+        setModalMessage('로그인 중 오류가 발생했습니다. 다시 시도해 주세요.');
+        setModalOpen(true);
       }
     },
     validate: LoginValidation,
@@ -68,6 +78,7 @@ function LoginPage() {
           </div>
         </form>
       </div>
+      <ErrorModal message={modalMessage} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 }
