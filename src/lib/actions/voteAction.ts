@@ -38,7 +38,7 @@ export const voteResult = async (token: string) => {
 };
 
 export const candiateList = async (token: string) => {
-  const response = await fetch(`https://hyeongjun.store/votes/candidates`, {
+  const response = await fetch(`https://hyeongjun.store/votes/leader`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
