@@ -17,7 +17,7 @@ export default function BackEndVote() {
     const token = localStorage.getItem('token') || '';
     try {
       const response = await LeaderVoteAction(memberId, token);
-      console.log('투표 결과:', response);
+
       if (response.ok) {
         alert('투표가 완료되었습니다.');
         router.push('/vote/back-end/result');
@@ -34,11 +34,10 @@ export default function BackEndVote() {
         const response = await candiateList(accessToken);
 
         const candidates = response.members || [];
-        console.log('Candidates123123:', candidates);
 
         if (Array.isArray(candidates)) {
           const filteredCandidates = candidates.filter(
-            (candidate: Candidate) => candidate.id >= 19 && candidate.id <= 28,
+            (candidate: Candidate) => candidate.id >= 15 && candidate.id <= 24,
           );
           setCandidateList(filteredCandidates);
         } else {
