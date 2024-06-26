@@ -33,7 +33,7 @@ export default function BackEndVote() {
       try {
         const response = await candiateList(accessToken);
 
-        const candidates = response.members || [];
+        const candidates = response || [];
 
         if (Array.isArray(candidates)) {
           const filteredCandidates = candidates.filter(

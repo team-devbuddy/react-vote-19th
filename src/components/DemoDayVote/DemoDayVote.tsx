@@ -12,6 +12,7 @@ export default function DemoDayVote() {
       const response = await voteAction(teamId, token);
       const data = await response.json();
       if (response.ok) {
+        alert('투표가 완료되었습니다.');
         router.push('/demo-day-vote/result');
       } else if (response.status === 400) {
         alert(data.message);

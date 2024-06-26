@@ -27,7 +27,7 @@ export const LeaderVoteAction = async (memberId: number, token: string) => {
 };
 
 export const voteResult = async (token: string) => {
-  const response = await fetch(`https://hyeongjun.store/votes/teams`, {
+  const response = await fetch(`https://hyeongjun.store/votes/demo`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
