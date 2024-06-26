@@ -7,11 +7,11 @@ export const signUpRequest = async (values: FormData) => {
     throw new Error(`Invalid team: ${values.team}`);
   }
 
-  const response = await fetch('http://43.201.123.205:8080/members/join', {
+  const response = await fetch('https://hyeongjun.store/members/join', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      Accept: 'application/json',
     },
     body: JSON.stringify({
       name: values.name,
