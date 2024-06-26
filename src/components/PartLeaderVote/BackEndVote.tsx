@@ -17,10 +17,15 @@ export default function BackEndVote() {
     const token = localStorage.getItem('token') || '';
     try {
       const response = await LeaderVoteAction(memberId, token);
+      const result = await response.json();
+      console.log(response, result);
 
       if (response.ok) {
         alert('투표가 완료되었습니다.');
         router.push('/vote/back-end/result');
+      }
+      if (result.status === 400) {
+        alert(result.message);
       }
     } catch (error) {
       console.error('투표 중 오류가 발생했습니다:', error);
