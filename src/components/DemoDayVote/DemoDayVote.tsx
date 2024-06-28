@@ -41,23 +41,23 @@ export default function DemoDayVote() {
             </div>
 
             <div
-              onClick={() => onClickVote(3)}
+              onClick={() => onClickVote(4)}
               className="flex h-20 w-40 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-main bg-BG-black text-center hover:bg-main active:bg-main">
               <p className="text-xl font-semibold">커플로그</p>
               <p className="text-xs text-gray-400">데이트 장소 큐레이션 서비스</p>
             </div>
 
             <div
-              onClick={() => onClickVote(4)}
+              onClick={() => onClickVote(5)}
               className="flex h-20 w-40 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-main bg-BG-black text-center hover:bg-main active:bg-main">
               <p className="text-xl font-semibold">TIG</p>
               <p className="text-xs text-gray-400">스포츠 여가 예약 통합 플랫폼</p>
             </div>
 
             <div
-              onClick={() => onClickVote(5)}
+              onClick={() => onClickVote(3)}
               className="flex h-20 w-40 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-main bg-BG-black text-center hover:bg-main active:bg-main">
-              <p className="text-xl font-semibold">펫플레이트</p>
+              <p className="text-xl font-semibold">Buldog</p>
               <p className="text-xs text-gray-400">보충제 e커머스 플랫폼</p>
             </div>
           </div>
