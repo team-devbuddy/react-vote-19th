@@ -18,6 +18,8 @@ export default function DemoDayVoteResult() {
       try {
         const response = await voteResult(accessToken);
         const result: VoteResult[] = await response.json();
+        // 결과를 voteCount 순으로 정렬
+        result.sort((a, b) => parseInt(b.voteCount) - parseInt(a.voteCount));
 
         setVoteResults(result);
       } catch (error) {
@@ -31,7 +33,6 @@ export default function DemoDayVoteResult() {
     <div className="flex w-full flex-col items-center justify-center bg-BG-black text-white">
       <main className="flex w-full flex-grow flex-col items-center justify-center px-12 pb-20">
         <h1 className="mb-8 text-center text-3xl font-bold">데모데이 투표 현황</h1>
-
         <div className="flex w-full gap-12">
           <div className="flex w-full flex-col gap-6">
             {voteResults.map((result, index) => (
